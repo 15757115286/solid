@@ -4,6 +4,6 @@ module.exports = {
     devServer:{
         host:'0.0.0.0',//默认本机地址为http://localhost:8080  局域网为本机内网ip:8080
         port:'3000',
-        open:false,//是否自动打开网页
+        open:false//是否自动打开网页
     }
 }
