@@ -10,7 +10,7 @@ export default {
 </script>
 <style scoped>
     .left-bar{
-        position: absolute;
+        position: fixed;
         left: 0px;
         width: 200px;
         top: 50px;

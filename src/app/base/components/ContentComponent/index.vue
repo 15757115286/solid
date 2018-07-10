@@ -1,7 +1,7 @@
 <template>
     <div class="content">
-        <div class="path">当前路径：首页->测试页面</div>
-        <router-view></router-view>
+        <div class="path" >当前路径：首页->测试页面 </div>
+        <router-view :style="{marginTop:'30px'}"></router-view>
     </div>
 </template>
 <script>
@@ -11,17 +11,21 @@ export default {
 </script>
 <style scoped>
     .content{
-        position: absolute;
-        left: 200px;
-        right: 0;
-        top: 50px;
-        bottom: 0;
-        background-color: brown;
+        position: relative;
+        margin-top: 50px;
+        margin-left: 200px;
+        overflow: auto;
     }
     .path{
+        position: fixed;
         height: 30px;
         line-height: 30px;
         border-bottom: 1px solid gainsboro;
+        background-color: white;
+        z-index: 999;
+        left: 200px;
+        right: 0;
+        overflow: hidden;
     }
 </style>
 

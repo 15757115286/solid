@@ -26,3 +26,8 @@
 
 我们在使用的时候可以把需要的组件注册到具体业务的router.js下面，然后在page目录下的router.js中引入业务路由即可，这样的
 划分可以是每个模块的业务更加清晰，如果不同模块之间有联系，我们可以通过全局的vuex状态树来管理
+
+## 开启/关闭eslint验证
+
+我们可以在vscode首选项中"vetur.validation.template": false|true来开启或者关闭摸板的语法验证，然后在vue.config.js中
+使用函数closeEslint()来关闭或者注释该函数来开启eslint验证（closeEslint不是最佳的关闭eslint的方法）。
