@@ -4,9 +4,7 @@
 
 <script>
 export default {
-  name: 'app',
-  components: {
-  }
+  name: 'app'
 }
 </script>
 
@@ -18,5 +16,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+*{
+  box-sizing: border-box
+}
+html,body{
+  margin: 0;
+  padding: 0;
 }
 </style>

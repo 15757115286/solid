@@ -29,8 +29,10 @@ export default new Vuex.Store({
         return new Promise(resolve=>{
           setTimeout(()=>{
             state.isLogin = true;
-            resolve(111);
-          },1000);
+            resolve({
+              success:0
+            });
+          },50);
         })
       }
     }

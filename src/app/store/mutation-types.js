@@ -1,1 +1,1 @@
-export const LOGIN = 'login';
+export const LOGIN = 'login';//登录API名称
