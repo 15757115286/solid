@@ -22,7 +22,7 @@ const router = new VueRouter({
         if(isLogin()){
             next()
         }else{
-            next('login')
+            next('/login')
         }
     }
  })
