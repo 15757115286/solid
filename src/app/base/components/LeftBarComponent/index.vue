@@ -1,23 +1,22 @@
 <template>
-    <div class="left-bar">
+    <div class="left-bar" :data-bbb="originData">
         <ul class="first-menu-ul">
             <li v-for="menu in menus" class="first-menu-li">
                 <a v-if="menu.hasChildren" @click.prevent="toggle(menu,$event)">
                     <span class="menu-name">{{ menu.name }}</span>
                 </a>
-                <router-link v-else :to="menu.path">
+                <router-link v-else :to="menu.path" @click.native="changePath(menu)">
                     <span class="menu-name">{{ menu.name }}</span>
                 </router-link>
                 <ul v-if="menu.hasChildren" class="second-menu-ul" :class="{open:menu.open}" 
                  :style="{height:menu.open ? menu.children.length * height + 'px' : '0px' }">
                     <li v-for="menu2 in menu.children" class="second-menu-li">
-                        <router-link :to="menu2.path">
+                        <router-link :to="menu2.path" @click.native="changePath(menu2)">
                             <span class="menu-name">{{ menu2.name }}</span>
                         </router-link>
                     </li>
                 </ul>
             </li>
-
         </ul>
     </div>
 </template>
@@ -29,7 +28,8 @@ export default {
   data() {
     return {
       menus: [],
-      height
+      height,
+      originData:'xwt'
     };
   },
   created() {
@@ -38,6 +38,9 @@ export default {
   methods: {
     toggle(menu, event) {
       menu && (menu.open = !menu.open);
+    },
+    changePath(path){
+        this.$store.commit('changePath',path);
     }
   }
 };
@@ -49,6 +52,7 @@ export default {
   width: 200px;
   top: 50px;
   bottom: 0px;
+  overflow: auto;
 }
 .left-bar a {
   display: block;

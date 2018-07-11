@@ -1,44 +1,44 @@
 //这里暂定为只有2级菜单
 export default [
     {
-        name:'组件1',
-        path:'/page/admin/compoent1',
+        name:'组件1（路由）',
+        path:'/page/admin/component1',
         hasChildren:false
     },
     {
-        name:'组件2',
+        name:'父菜单1',
         hasChildren:true,
         children:[
             {
-                name:'组件4',
-                path:'/page/admin/component4',
+                name:'组件2',
+                path:'/page/admin/component2',
                 hasChildren:false
             },
             {
-                name:'组件5',
-                path:'/page/admin/component5',
+                name:'组件3',
+                path:'/page/admin/component3',
                 hasChildren:false
             }
         ],
         open:true
     },
     {
-        name:'组件3',
-        path:'page/admin/component3',
+        name:'路由3',
+        path:'/page/admin/component3',
         hasChildren:false,
     },
     {
-        name:'组件8',
+        name:'父菜单2',
         hasChildren:true,
         children:[
             {
-                name:'组件9',
-                path:'/page/admin/component4',
+                name:'组件2-2',
+                path:'/page/admin/component2',
                 hasChildren:false
             },
             {
-                name:'组件10',
-                path:'/page/admin/component5',
+                name:'组件2-3',
+                path:'/page/admin/component3',
                 hasChildren:false
             }
         ],

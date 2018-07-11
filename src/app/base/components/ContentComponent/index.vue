@@ -1,6 +1,8 @@
 <template>
     <div class="content">
-        <div class="path" >当前路径：首页->测试页面 </div>
+        <div class="path" :origin-path="$store.state.currentPath.path">
+            当前路径：{{ $store.state.currentPath.name }} 
+        </div>
         <router-view :style="{marginTop:'30px'}"></router-view>
     </div>
 </template>
@@ -26,6 +28,7 @@ export default {
         left: 200px;
         right: 0;
         overflow: hidden;
+        padding-left: 10px;
     }
 </style>
 

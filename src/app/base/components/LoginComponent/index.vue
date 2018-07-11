@@ -23,6 +23,7 @@ export default {
         if (res.success == 0) {
           //这里模仿登录成功
           this.$router.push("/page/admin");
+          this.$store.commit('changePath',{path:"/page/admin",name:'首页z'})
         } else {
           console.log("登录失败！");
         }

@@ -7,7 +7,8 @@ Vue.use(Vuex);//使用vuex状态管理
 export default new Vuex.Store({
     state: {
       count: 0,
-      isLogin: false
+      isLogin: false,
+      currentPath:{}
     },
     /**
      * mutations中的函数只能是同步函数，在组件中通过this.$store.commit(type:string,option:object)触发
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     mutations: {
       increment (state) {
         state.count++
+      },
+      [api.CHANGE_PATH](state,path){
+        state.currentPath = path;
       }
     },
     /**

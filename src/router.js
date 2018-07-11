@@ -13,6 +13,7 @@ const router = new VueRouter({
     ]
  });
  router.beforeEach((to,from,next)=>{
+     console.log(to.path);
     if(to.matched.length == 0){
         return void next({path:'/page/error/404',replace:true});
     }
