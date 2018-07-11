@@ -9,6 +9,7 @@
     "start": "vue-cli-service serve"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "iview": "^2.14.3",
     "vue": "^2.5.16",
     "vue-resource": "^1.5.1",

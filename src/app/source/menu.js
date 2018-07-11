@@ -1,0 +1,49 @@
+//这里暂定为只有2级菜单
+export default [
+    {
+        name:'组件1',
+        path:'/page/admin/compoent1',
+        hasChildren:false
+    },
+    {
+        name:'组件2',
+        hasChildren:true,
+        children:[
+            {
+                name:'组件4',
+                path:'/page/admin/component4',
+                hasChildren:false
+            },
+            {
+                name:'组件5',
+                path:'/page/admin/component5',
+                hasChildren:false
+            }
+        ],
+        open:true
+    },
+    {
+        name:'组件3',
+        path:'page/admin/component3',
+        hasChildren:false,
+    },
+    {
+        name:'组件8',
+        hasChildren:true,
+        children:[
+            {
+                name:'组件9',
+                path:'/page/admin/component4',
+                hasChildren:false
+            },
+            {
+                name:'组件10',
+                path:'/page/admin/component5',
+                hasChildren:false
+            }
+        ],
+        open:false
+    }
+]
+
+export const height = 41;
