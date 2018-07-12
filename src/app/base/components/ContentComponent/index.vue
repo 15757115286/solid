@@ -1,7 +1,7 @@
 <template>
     <div class="content">
-        <div class="path" :origin-path="$store.state.currentPath.path">
-            当前路径：{{ $store.state.currentPath.name }} 
+        <div class="path" :origin-path="$store.state.currentPath.toPath">
+            当前路径：{{ $store.state.currentPath.toPath | translateMenu }} 
         </div>
         <router-view :style="{marginTop:'30px'}"></router-view>
     </div>

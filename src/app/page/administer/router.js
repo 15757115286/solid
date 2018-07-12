@@ -7,6 +7,7 @@ const adminRouter = {
     path: 'admin',
     component:AdministerComponent,
     children: [
+        { path: 'first', component: HelloWorldComponent },
         { path: 'component1', component: Component1 },
         { path: 'component2', component: Component2 },
         { path: 'component3', component: Component3 },

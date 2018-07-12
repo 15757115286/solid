@@ -1,9 +1,10 @@
 //这里暂定为只有2级菜单
 export default [
     {
-        name:'组件1（路由）',
-        path:'/page/admin/component1',
-        hasChildren:false
+        name:'首页',
+        path:'/page/admin/first',
+        hasChildren:false,
+        icon:'fa-bar-chart'
     },
     {
         name:'父菜单1',
@@ -46,4 +47,5 @@ export default [
     }
 ]
 
-export const height = 41;
+export const height = 41;//这个是菜单选项的高度，因为动态计算的这里需要预先设置
+export const defaultIcon = 'fa-circle-o';//默认的图标，如果没有icon属性的菜单会调用这个

@@ -1,7 +1,9 @@
-import VueRouter from 'vue-router';
+import VueRouter from 'vue-router'
+import store from 'app/store'
 import pageRouter from 'app/page/router'
 import { isLogin } from 'app/utils/common'
 import LoginComponent from 'app/base/components/LoginComponent'
+
 
 const PageComponent = () => import(/* webpackChunkName: 'page' */'app/page');
 
@@ -13,7 +15,6 @@ const router = new VueRouter({
     ]
  });
  router.beforeEach((to,from,next)=>{
-     console.log(to.path);
     if(to.matched.length == 0){
         return void next({path:'/page/error/404',replace:true});
     }
@@ -26,5 +27,11 @@ const router = new VueRouter({
             next('/login')
         }
     }
+ });
+ router.afterEach((to,from)=>{
+    store.commit('changePath',{
+        toPath:to.fullPath,
+        fromPath:from.fullPath
+    })
  })
 export default router;

@@ -1,17 +1,21 @@
 <template>
-    <div class="left-bar" :data-bbb="originData">
+    <div class="left-bar">
         <ul class="first-menu-ul">
             <li v-for="menu in menus" class="first-menu-li">
-                <a v-if="menu.hasChildren" @click.prevent="toggle(menu,$event)">
+                <a v-if="menu.hasChildren" @click.prevent="toggle(menu,$event)" :class="{open:menu.open}">
+                    <i class="fa" :class = "menu.icon || defaultIcon" aria-hidden="true"></i>
                     <span class="menu-name">{{ menu.name }}</span>
+                    <i class="fa fa-angle-right pull-right" aria-hidden="true"></i>
                 </a>
-                <router-link v-else :to="menu.path" @click.native="changePath(menu)">
+                <router-link v-else :to="menu.path" >
+                    <i class="fa" :class = "menu.icon || defaultIcon" aria-hidden="true"></i>
                     <span class="menu-name">{{ menu.name }}</span>
                 </router-link>
-                <ul v-if="menu.hasChildren" class="second-menu-ul" :class="{open:menu.open}" 
+                <ul v-if="menu.hasChildren" class="second-menu-ul"  
                  :style="{height:menu.open ? menu.children.length * height + 'px' : '0px' }">
                     <li v-for="menu2 in menu.children" class="second-menu-li">
-                        <router-link :to="menu2.path" @click.native="changePath(menu2)">
+                        <router-link :to="menu2.path">
+                            <i class="fa" :class = "menu.icon || defaultIcon" aria-hidden="true"></i>
                             <span class="menu-name">{{ menu2.name }}</span>
                         </router-link>
                     </li>
@@ -21,15 +25,14 @@
     </div>
 </template>
 <script>
-import menus from "app/source/menu";
-import { height } from "app/source/menu";
+import menus , { height , defaultIcon } from "@/assets/source/menu";
 export default {
   name: "leftBarComponent",
   data() {
     return {
       menus: [],
       height,
-      originData:'xwt'
+      defaultIcon
     };
   },
   created() {
@@ -38,9 +41,6 @@ export default {
   methods: {
     toggle(menu, event) {
       menu && (menu.open = !menu.open);
-    },
-    changePath(path){
-        this.$store.commit('changePath',path);
     }
   }
 };
@@ -62,9 +62,17 @@ export default {
   overflow: hidden;
   transition: height 0.3s;
 }
-/* .second-menu-ul.open{
-    height: 82px;
-} */
+.left-bar i + span{
+  margin-left: 10px;
+}
+.pull-right{
+  float: right;
+  margin-right: 15px;
+  transition: transform 0.3s;
+}
+.open .pull-right{
+  transform:rotate(90deg)
+}
 </style>
 
 
