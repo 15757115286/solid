@@ -41,6 +41,16 @@ export default new Vuex.Store({
             });
           },50);
         })
+      },
+      [api.LOGOUT]({state}){
+        return new Promise(resolve=>{
+          setTimeout(()=>{
+            state.isLogin = false;
+            resolve({
+              success:0
+            })
+          },50)
+        })
       }
     }
   })

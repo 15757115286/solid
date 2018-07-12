@@ -19,7 +19,7 @@ import console from "app/utils/console";
 export default {
   methods: {
     submit() {
-      this.$store.dispatch("login", { name: "xwt" }, {}, {}).then(res => {
+      this.$store.dispatch("login", { name: "xwt" }).then(res => {
         if (res.success == 0) {
           //这里模仿登录成功
           this.$router.push("/page/admin/first");
