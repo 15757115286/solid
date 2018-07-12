@@ -5,10 +5,14 @@ $head_bar_bg_color:#20222A;//头部菜单的背景颜色
 $left_bar_child_bg_color:rgba(0,0,0,.3);//非顶级菜单的背景颜色
 $a_active_color:#fff;//被选中或者悬浮的菜单文集颜色
 $a_active_bg_color:#009688;//被选中或者悬浮的菜单的背景颜色
+$head_bar_user_text_color:white;//头部用户信息文字颜色
 
 body.black{
     .head{
         background-color: $head_bar_bg_color;
+        .user-text{
+            color:$head_bar_user_text_color;
+        }
     }
     li{
         list-style-type: none;
