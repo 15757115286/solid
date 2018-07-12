@@ -1,24 +1,36 @@
-$a_color:rgba(255, 255, 255, .7);
-$a_hover_color:#fff;
-$left_bar_color:#20222A;
-$left_bar_child_color:rgba(0,0,0,.3);
+$a_color:rgba(255, 255, 255, .7);//普通的菜单文字颜色
+$left_bar_bg_color:#20222A;//左侧菜单的背景色
+$left_bar_border_top_color:lightslategray;//左侧菜单上边界颜色
+$head_bar_bg_color:#20222A;//头部菜单的背景颜色
+$left_bar_child_bg_color:rgba(0,0,0,.3);//非顶级菜单的背景颜色
+$a_active_color:#fff;//被选中或者悬浮的菜单文集颜色
+$a_active_bg_color:#009688;//被选中或者悬浮的菜单的背景颜色
 
 body.black{
+    .head{
+        background-color: $head_bar_bg_color;
+    }
     li{
         list-style-type: none;
     }
     .left-bar{
-        background-color: $left_bar_color;
+        background-color: $left_bar_bg_color;
+        border-top: 3px solid $left_bar_border_top_color;
         a{
             color: $a_color;
             font-size: 14px;
-            transition:color 0.3s;
+            transition:color 0.3s ,background-color 0.3s;
         }
         a:hover{
-            color:$a_hover_color;
+            color:$a_active_color;
+        }
+        .router-link-exact-active {
+            color:$a_active_color;
+            background-color: $a_active_bg_color;
         }
     }
-    .second-menu-ul{
-        background-color: $left_bar_child_color;
+    .second-menu-ul,
+    .third-menu-ul{
+        background-color: $left_bar_child_bg_color;
     }
 }

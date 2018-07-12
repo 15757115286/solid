@@ -22,7 +22,7 @@ export default {
       this.$store.dispatch("login", { name: "xwt" }, {}, {}).then(res => {
         if (res.success == 0) {
           //这里模仿登录成功
-          this.$router.push("/page/admin");
+          this.$router.push("/page/admin/first");
         } else {
           console.log("登录失败！");
         }
