@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import * as api from './mutation-types'
+import http from 'app/base/http'
 Vue.use(Vuex);//使用vuex状态管理
 
 export default new Vuex.Store({
@@ -32,7 +33,7 @@ export default new Vuex.Store({
      * 
      */
     actions:{
-      [api.LOGIN]({state}){
+      [api.LOGIN]({state},params){
         return new Promise(resolve=>{
           setTimeout(()=>{
             state.isLogin = true;

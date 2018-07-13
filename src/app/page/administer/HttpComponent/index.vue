@@ -34,27 +34,11 @@ export default {
     };
   },
   methods: {
-    test01() {
-      this.processAfter(
-        this.$http.post("service/commserver/AuthService/loginIn")
-      );
-    },
-    test02() {
-      let promise = this.$http.post(
-        "service/commserver/AuthService/loginIn",
-        {
-          accountid: this.username,
-          password: this.password
-        },
-        {}
-      );
-      this.processAfter(promise);
-    },
     test03(){
         http.get(this.url,{
             accountid: this.username,
             password: this.password
-        },this.needIntercept).then(res=>{
+        },{timeout:10},this.needIntercept).do(res=>{
             console.log(res);
         })
     },
@@ -62,20 +46,10 @@ export default {
         http.post(this.url,{
           accountid: this.username,
           password: this.password
-        },this.needIntercept).then(res=>{
+        },this.needIntercept).do(res=>{
             console.log(res);
         })
     },
-    processAfter(promise) {
-      promise.then(
-        res => {
-          console.log(res, "success");
-        },
-        rej => {
-          console.log(rej, "fail");
-        }
-      );
-    }
   }
 };
 </script>

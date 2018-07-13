@@ -3,11 +3,11 @@ import router from '@/router'
 import { getIPConfig } from 'app/utils/common'
 let config = getIPConfig();
 let instance = axios.create({
-    baseURL: config.HOST
+    baseURL: config.HOST,
+    timeout:5000
 });
 //axios自带的请求过滤
 instance.interceptors.request.use(function (config) {
-    console.log(config, config.headers);
     let token = localStorage.getItem('token') ;
     token && (config.headers['HTTP_ACCESS_TOKEN'] = token);
     return config;
@@ -16,7 +16,6 @@ instance.interceptors.request.use(function (config) {
 });
 //axios自带的响应过滤
 instance.interceptors.response.use(function (response) {
-    console.log(response);
     return response.data;
 }, function (error) {
     return Promise.reject(error);
@@ -38,9 +37,10 @@ function processError(rej){
     router.push('/page/error/network');
 }
 
-function post(url,params = {},intercept = true){
+function post(url,params = {},config = {},intercept = true){
+    if(typeof config == 'boolean') [config,intercept] = [{},config];
     let promise = new generate();
-    instance.post(url,params).then(res=>{
+    instance.post(url,params,config).then(res=>{
         if(intercept === false){
             promise.callback(res);
         }else{
@@ -59,9 +59,11 @@ function post(url,params = {},intercept = true){
     return promise;
 }
 
-function get(url,params = {},intercept = true){
+function get(url,params = {},config = {},intercept = true){
+    if(typeof config == 'boolean') [config,intercept] = [{},config];
+    config.params = params;
     let promise = new generate();
-    instance.get(url,{params}).then(res=>{
+    instance.get(url,config).then(res=>{
         if(intercept === false){
             promise.callback(res);
         }else{
@@ -79,11 +81,14 @@ function get(url,params = {},intercept = true){
     })
     return promise;
 }
+
+function noop(){}
+
 function generate(){
-    this.callback = null;
+    this.callback = noop;
 }
 
-generate.prototype.then = function(fn){
+generate.prototype.do = function(fn){
     this.callback = fn;
 }
 
