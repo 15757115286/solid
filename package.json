@@ -13,7 +13,6 @@
     "font-awesome": "^4.7.0",
     "iview": "^2.14.3",
     "vue": "^2.5.16",
-    "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
@@ -21,6 +20,7 @@
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",
+    "axios": "^0.18.0",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
     "vue-template-compiler": "^2.5.16"

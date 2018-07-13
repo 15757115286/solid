@@ -12,8 +12,8 @@ export default function getMenuSource(){
             hasChildren:true,
             children:[
                 {
-                    name:'组件2',
-                    path:'/page/admin/component2',
+                    name:'http测试组件',
+                    path:'/page/admin/http',
                     hasChildren:false
                 },
                 {
