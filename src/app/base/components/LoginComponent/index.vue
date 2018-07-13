@@ -3,11 +3,11 @@
         <div class="login-wrapper">
             <div>
                 <label>用户名：</label>
-                <input type='text' name='username'>
+                <input type='text' name='username' v-model="username">
             </div>
             <div>
                 <label>密码：</label>
-                <input type='text' name='password'>
+                <input type='text' name='password' v-model="password">
             </div>
             <button @click="submit()">登录</button>
         </div>
@@ -16,15 +16,24 @@
 
 <script>
 import console from "app/utils/console";
+import { isSuccess } from 'app/utils/common'
 export default {
+  data(){
+    return {
+      username:'',
+      password:''
+    }
+  },
   methods: {
     submit() {
-      this.$store.dispatch("login", { name: "xwt" }).then(res => {
-        if (res.success == 0) {
-          //这里模仿登录成功
-          this.$router.push("/page/admin/first");
-        } else {
-          console.log("登录失败！");
+      console.log(this.$http);
+      this.$store.dispatch("login", {
+        username: this.username,
+        password: this.password
+      }).then(res => {
+        if(isSuccess(res)){
+          localStorage.setItem('token',res.data.HTTP_ACCESS_TOKEN);
+          this.$router.push('/page/admin/first');
         }
       });
     }

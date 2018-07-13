@@ -35,3 +35,12 @@
 
 我们可以在vscode首选项中"vetur.validation.template": false|true来开启或者关闭摸板的语法验证，然后在vue.config.js中
 使用函数closeEslint()来关闭或者注释该函数来开启eslint验证（closeEslint不是最佳的关闭eslint的方法）。
+
+## ajax模块
+
+本框架ajax使用的是vue官方推荐的axios，框架中只对常用的get和post进行了再封装。我们可以import http from 'app/base/http'来导入http。
+值得一提的是这里的http有get和$get两种函数。$get是返回的promise对象，用法参考https://www.kancloud.cn/yunye/axios/234845。
+get是这里进行的一次封装，我们使用 http.get(url,params,config?,intercept?).do(res=>{....}) 来使用。
+intercept默认为true，会把一些请求失败的默认跳转到失败页面，这样的话我们可以只关心正确的数据，从而只需关心业务方面的代码。
+这里的逻辑是按照自己的需求来实现的，可以自行修改。
+如果想配合vuex的action来使用的话，推荐用$post和$get，因为这两个方法返回的是action中可以接受的Promise对象。

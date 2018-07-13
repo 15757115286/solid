@@ -10,10 +10,12 @@ import iView from 'iview'
 import App from './app.vue'
 import router from './router'
 import store from './app/store'
+import HttpPlugin from 'app/base/http/plugin'
 
 
 Vue.use(VueRouter);//使用路由
 Vue.use(iView);//使用iView UI
+Vue.use(HttpPlugin, {needNative:true});
 Vue.config.productionTip = false;
 
 new Vue({

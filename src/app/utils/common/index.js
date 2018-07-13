@@ -15,4 +15,7 @@ export function getIPConfig(){
     let config = isDev() ? enviroment.dev : 
         isProd() ? enviroment.prod : {};
     return config; 
-}  
+} 
+export function isSuccess(res){
+    return !!(res && res.code == 200 && res.data.success == 1);
+}

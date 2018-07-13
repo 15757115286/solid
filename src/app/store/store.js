@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import * as api from './mutation-types'
 import http from 'app/base/http'
+import * as utils from 'app/utils/common'
 Vue.use(Vuex);//使用vuex状态管理
 
 export default new Vuex.Store({
@@ -34,19 +35,21 @@ export default new Vuex.Store({
      */
     actions:{
       [api.LOGIN]({state},params){
-        return new Promise(resolve=>{
-          setTimeout(()=>{
+        return http.$post('service/commserver/AuthService/loginIn',{
+          accountid: params.username,
+          password: params.password
+        }).then(res=>{
+          if(utils.isSuccess(res)){
             state.isLogin = true;
-            resolve({
-              success:0
-            });
-          },50);
+            return res;
+          }
         })
       },
       [api.LOGOUT]({state}){
         return new Promise(resolve=>{
           setTimeout(()=>{
             state.isLogin = false;
+            localStorage.removeItem('token');
             resolve({
               success:0
             })

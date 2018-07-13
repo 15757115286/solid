@@ -22,7 +22,6 @@
     </div>
 </template>
 <script>
-import http from 'app/base/http'
 export default {
   name: "httpComponent",
   data() {
@@ -35,7 +34,7 @@ export default {
   },
   methods: {
     test03(){
-        http.get(this.url,{
+        this.$http.get(this.url,{
             accountid: this.username,
             password: this.password
         },{timeout:10},this.needIntercept).do(res=>{
@@ -43,7 +42,7 @@ export default {
         })
     },
     test04(){
-        http.post(this.url,{
+        this.$http.post(this.url,{
           accountid: this.username,
           password: this.password
         },this.needIntercept).do(res=>{
