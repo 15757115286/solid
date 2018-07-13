@@ -7,7 +7,7 @@
             </div>
             <div>
                 <label>密码：</label>
-                <input type='text' name='password' v-model="password">
+                <input type='password' name='password' v-model="password">
             </div>
             <button @click="submit()">登录</button>
         </div>
@@ -42,17 +42,22 @@ export default {
 </script>
 <style scoped>
 #login {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
   padding:110px 0;
+  background:  url(./img/login_bg.png)  no-repeat fixed ;
+  background-size: 100% 100%;
 }
 .login-wrapper{
     position: relative;
     margin: 0 auto;
     width: 375px;
+    height: 500px;
+    padding: 20px 15px;
+    border: 1px solid gray;
+    background: rgba(255, 255, 255,0.2);
+    border-radius: 10px;
 }
 </style>
 
