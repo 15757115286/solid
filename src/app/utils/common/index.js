@@ -2,6 +2,8 @@ import store from '../../store'
 import enviroment from 'app/environment'
 
 const env = process.env.NODE_ENV;
+const Obj = {};
+const toString = Obj.toString;
 export function isDev(){
     return env === 'development';
 }
@@ -18,4 +20,7 @@ export function getIPConfig(){
 } 
 export function isSuccess(res){
     return !!(res && res.code == 200 && res.data.success == 1);
+}
+export function isFunction(fn){
+    return toString.call(fn) === '[object Function]';
 }

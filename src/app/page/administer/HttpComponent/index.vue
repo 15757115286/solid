@@ -13,11 +13,12 @@
                 <label>密码：</label>
                 <input type="password" v-model="password">
             </div>
-            <p>http请求测试：配置config</p>
-            <button @click="test03()">get測試</button>
-            <br>
             <input type="checkbox" v-model="needIntercept">是否开启过滤
+            <button @click="test03()">get測試</button>
             <button @click="test04()">post测试04</button>
+            <br>
+            <input type="checkbox" v-model="needError">是否加入错误url
+            <button @click="testAll()">post测试All</button>
         </div>
     </div>
 </template>
@@ -29,26 +30,81 @@ export default {
       username: "sensoradmin",
       password: "1111",
       url: "service/commserver/AuthService/loginIn",
-      needIntercept:true
+      needIntercept: true,
+      needError:false
     };
   },
   methods: {
-    test03(){
-        this.$http.get(this.url,{
+    test03() {
+      this.$http
+        .get(
+          this.url,
+          {
             accountid: this.username,
             password: this.password
-        },{timeout:10},this.needIntercept).do(res=>{
-            console.log(res);
+          },
+          this.needIntercept
+        )
+        .do(res => {
+          console.log(res);
         })
+        .error(rej => {
+          console.log("error", rej);
+        });
     },
-    test04(){
-        this.$http.post(this.url,{
-          accountid: this.username,
-          password: this.password
-        },this.needIntercept).do(res=>{
-            console.log(res);
+    test04() {
+      let promise = this.$http
+        .post(
+          this.url,
+          {
+            accountid: this.username,
+            password: this.password
+          },
+          this.needIntercept
+        )
+        .do(res => {
+          console.log(res);
         })
+        .error(rej => {
+          console.log("error", rej);
+        });
     },
+    testAll() {
+      let errorUrl = this.url + '/error';
+      this.$http
+        .all([
+          this.$http.get(
+            this.url,
+            {
+              accountid: this.username,
+              password: this.password
+            },
+            this.needIntercept
+          ),
+          this.$http.get(
+            this.url,
+            {
+              accountid: this.username,
+              password: this.password
+            },
+            this.needIntercept
+          ),
+          this.$http.get(
+            this.needError ? errorUrl : this.url,
+            {
+              accountid: this.username,
+              password: this.password
+            },
+            this.needIntercept
+          )
+        ])
+        .do(res => {
+          console.log(res);
+        })
+        .error(rej => {
+          console.log(rej);
+        });
+    }
   }
 };
 </script>
