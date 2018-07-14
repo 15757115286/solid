@@ -1,6 +1,9 @@
 <template>
     <div class="head">
-        <img height="50px" :src="headImg"  alt="head logo">
+        <div class="right-head">
+            <img height="24px" :src="headImg"  alt="head logo">
+            <a>Admin</a>
+        </div>
         <div class="user-info" @mouseenter="enter()" @mouseleave="leave()">
             <div class="user-img">
                 <img :src="personImg" alt="user logo">
@@ -14,14 +17,13 @@
                 <hr>
                 <li @click="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i><span>退出登录</span></li>
             </ul>
-        </div>
-        
+        </div>       
         <!-- <button @click="changeLocal('zh')">路径（中文）</button>
         <button @click="changeLocal('en')">路径（英文）</button> -->
     </div>
 </template>
 <script>
-import headImg from '@/assets/img/head_logo.png'
+import headImg from '@/assets/img/cmlogo.png'
 import personImg from '@/assets/img/person.png'
 export default {
     name:'headComponent',
@@ -60,6 +62,23 @@ export default {
         left: 0;
         right: 0;
         z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+    }
+    .right-head{
+        display: flex;
+        align-items:center;
+        justify-content: flex-start;
+        width: 200px;
+        margin-left: 24px;
+    }
+    
+    .right-head a{
+        font-size: 24px;
+        color: #fff;
+    }
+    .right-head a:hover{
+        color: #009688;
     }
     .user-info{
         position: relative;
