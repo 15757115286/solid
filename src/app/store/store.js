@@ -25,6 +25,9 @@ export default new Vuex.Store({
       },
       [api.CHANGE_LANGUAGE](state,language){
         state.local = language;
+      },
+      [api.IS_LOGIN](state){
+        state.isLogin = true;
       }
     },
     /**

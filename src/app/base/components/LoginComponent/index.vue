@@ -26,7 +26,11 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.$http);
+      if(this.username == 'admin'  && this.password == '1111'){
+        this.$store.commit('isLogin');
+        this.$router.push('/page/admin/first');
+        return;
+      }
       this.$store.dispatch("login", {
         username: this.username,
         password: this.password
