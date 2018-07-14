@@ -1,17 +1,17 @@
 <template>
     <div id="login">
-        <div class="login-wrapper">
-            <div>
-                <label>用户名：</label>
-                <input type='text' name='username' v-model="username">
-            </div>
-            <div>
-                <label>密码：</label>
-                <input type='password' name='password' v-model="password">
-            </div>
-            <button @click="submit()">登录</button>
-        </div>
-    </div>
+          <div class="login-wrapper">
+              <div>
+                  <label>用户名：</label>
+                  <input type='text' name='username' v-model="username">
+              </div>
+              <div>
+                  <label>密码：</label>
+                  <input type='password' name='password' v-model="password">
+              </div>
+              <button @click="submit()">登录</button>
+          </div>
+      </div>
 </template>
 
 <script>
@@ -42,9 +42,12 @@ export default {
 </script>
 <style scoped>
 #login {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  overflow:auto;
   padding:110px 0;
   background:  url(./img/login_bg.png)  no-repeat fixed ;
   background-size: 100% 100%;
