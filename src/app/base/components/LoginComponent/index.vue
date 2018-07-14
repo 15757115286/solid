@@ -52,13 +52,12 @@ export default {
   bottom:0;
   right:0;
   overflow:auto;
-  padding:110px 0;
   background:  url(./img/login_bg.png)  no-repeat fixed ;
   background-size: 100% 100%;
 }
 .login-wrapper{
     position: relative;
-    margin: 0 auto;
+    margin: 110px auto;
     width: 375px;
     height: 500px;
     padding: 20px 15px;
