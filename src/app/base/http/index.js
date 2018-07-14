@@ -56,6 +56,8 @@ function $get(url, params = {}, config = {}) {
 }
 
 //自己封装好的post,返回的是一个generate对象，调用do函数来增加回调
+//如果是开启拦截的才会调用error函数，如果不开启拦截，
+//那么错误信息会通过do函数返回，没必要执行2遍相同的操作。
 function post(url, params = {}, config = {}, intercept = true) {
     if (typeof config == 'boolean') [intercept, config] = [config, {}];
     let promise = new generate(intercept);
@@ -104,30 +106,37 @@ function get(url, params = {}, config = {}, intercept = true) {
 }
 
 //如果所有请求都完成，则会调用do函数，如果一个失败则会调用error（只执行一次）
-//其他的函数的返回结果会忽略。如果是开启拦截的才会调用error函数，如果不开启
-//拦截，那么错误信息会通过do函数返回，没必要执行2遍相同的操作。
+//其他的函数的返回结果会忽略。（只支持封装的get和post，不支持$get和$post）
+//如果函数都是默认不开启拦截的，那么所有的错误都会调用$success，此时也会调用all
+//的do函数而不是error
 function all(requests) {
     if(!Array.isArray(requests)) return;
     let count = 0, error = false;
     let promise = new generate();
     let length = requests.length;
     let result = Array(length);
-    for (let i = 0; i < length; i++) {
-        requests[i].do(res => {
-            if (!error) {
-                result[i] = res;
-                if (++count == length) {
-                    promise.$success(result);
+    try{
+        for (let i = 0; i < length; i++) {
+            requests[i]
+            .do(res => {
+                if (!error) {
+                    result[i] = res;
+                    if (++count == length) {
+                        promise.$success(result);
+                    }
                 }
-            }
-        }).error(rej => {
-            !error && (promise.$error({
-                url: requests[i].url,
-                pos: i,
-                error: rej
-            }));
-            error = true;
-        })
+            })
+            .error(rej => {
+                !error && (promise.$error({
+                    url: requests[i].url,
+                    pos: i,
+                    error: rej
+                }));
+                error = true;
+            })
+        }
+    }catch(e){
+        console.error(e);
     }
     return promise;
 }
