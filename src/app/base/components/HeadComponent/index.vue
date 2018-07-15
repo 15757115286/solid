@@ -5,9 +5,7 @@
             <a>Admin</a>
         </div>
         <div class="user-info" @mouseenter="enter()" @mouseleave="leave()">
-            <div class="user-img">
-                <img :src="personImg" alt="user logo">
-            </div>
+            <img :src="personImg" alt="user logo" class="user-img">
             <span class="user-text">你好，曹敏</span>
             <i class="fa fa-caret-down arrow-down" aria-hidden="true"></i>
             <ul class="menu-down" ref="menuDown" :style="{display : show ? 'block' : 'none'}"
@@ -88,17 +86,13 @@ export default {
         align-items: center;
         padding:0 20px;
     }
+
     .user-img{
-        display: inline-block;
-        border-radius: 32px;
-        overflow: hidden;
-    }
-    .user-img,.user-img img{
-         height: 32px;
-         width: 32px;
+        height: 32px;
+        border-radius: 100%;
     }
     .user-text{
-        margin-left: 5px;
+        margin-left: 10px;
     }
     .arrow-down{
         transition:transform 0.3s;

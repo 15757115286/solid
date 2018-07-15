@@ -1,15 +1,18 @@
 <template>
     <div id="login">
           <div class="login-wrapper">
-              <div>
-                  <label>用户名：</label>
-                  <input type='text' name='username' v-model="username">
+              <div class="login-title">
+                  <span>cm-Admin</span>
               </div>
-              <div>
-                  <label>密码：</label>
-                  <input type='password' name='password' v-model="password">
+              <div class="login-item">
+                  <i class="fa fa-user-o login-icon" aria-hidden="true"></i>
+                  <input type='text' name='username' v-model="username" class="cm-input user" placeholder="用户名">
               </div>
-              <button @click="submit()">登录</button>
+              <div class="login-item">
+                  <i class="fa fa-lock login-icon" aria-hidden="true"></i>
+                  <input type='password' name='password' v-model="password" class="cm-input" placeholder="密码">
+              </div>
+              <button @click="submit()" class="cm-button">登录</button>
           </div>
       </div>
 </template>
@@ -58,12 +61,28 @@ export default {
 .login-wrapper{
     position: relative;
     margin: 110px auto;
-    width: 375px;
-    height: 500px;
-    padding: 20px 15px;
-    border: 1px solid gray;
-    background: rgba(255, 255, 255,0.2);
+    width: 540px;
+    padding: 28px 40px 80px;
+    border: 0;
+    background-color: rgba(255, 255, 255,0.3);
     border-radius: 10px;
+    color: black;
+}
+.login-title{
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+.login-item{
+  position: relative;
+  margin-bottom: 40px;
+}
+.login-icon{
+    position: absolute;
+    font-size: 18px;
+    top: 17px;
+    left: 17px;
+    color: #000;
 }
 </style>
 

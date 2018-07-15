@@ -21,12 +21,13 @@ instance.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 //请求成功统一拦截过滤，只处理data（经过自带的response拦截过滤）code为200的请求
-//其他均返回到对应的错误页面
+//其他均返回到对应的错误页面 --> 针对自己逻辑来处理，会在all和get和post中使用
 function processData(data, promise) {
     let success = false;
     if (data.code == 200) {
         success = true;
-        promise.$success(data.data);
+        promise.$success(data = data.data);
+        return data;
     } else if (data.code == 500) {
         router.push('/page/error/500');
     } else if (data.code == 401) {
@@ -37,6 +38,7 @@ function processData(data, promise) {
     if (!success) {
         promise.$error(data);
     }
+    return data;
 }
 //请求失败统一拦截过滤，这里的错误包括url错误，超时等等
 function processError(error, promise) {
@@ -117,7 +119,8 @@ function all(requests) {
     let result = Array(length);
     try{
         for (let i = 0; i < length; i++) {
-            requests[i]
+            let _promise = requests[i];
+            _promise
             .do(res => {
                 if (!error) {
                     result[i] = res;
@@ -128,7 +131,7 @@ function all(requests) {
             })
             .error(rej => {
                 !error && (promise.$error({
-                    url: requests[i].url,
+                    url: _promise.url,
                     pos: i,
                     error: rej
                 }));

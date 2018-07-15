@@ -1,2 +1,24 @@
 @import './black_theme.scss';
 
+.cm-input{
+    padding: 14px 10px 14px 50px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 0px;
+    outline: none;
+}
+
+.cm-button{
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #7c899b;
+    cursor: pointer;
+    outline: none;
+    font-size: 20px;
+}
+
+
