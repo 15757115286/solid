@@ -23,8 +23,8 @@ import { isSuccess } from 'app/utils/common'
 export default {
   data(){
     return {
-      username:'',
-      password:''
+      username:'sensoradmin',
+      password:'1111'
     }
   },
   methods: {
