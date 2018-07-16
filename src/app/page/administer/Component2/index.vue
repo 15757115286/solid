@@ -3,6 +3,7 @@
         <span>这个是测试组件2</span>
         <div id="block1" ref="div"></div>
         <button @click="test01()">测试</button>
+        <button @click="test02()">停止</button>
     </div>
 </template>
 <script>
@@ -15,6 +16,9 @@ export default {
             console.log(getComputedStyle(this.$refs.div));
             let ani = new animation(this.$refs.div,{'margin-left':'200px','width':'200px',display:'none'},1000);
             animation.start();
+        },
+        test02(){
+            animation.stop();
         }
     }
 }
