@@ -1,3 +1,4 @@
+import { fail } from "assert";
 
 
 const object = {};
@@ -43,21 +44,24 @@ function canAnimation(prop){
     return false;
 }
 
-export function setStyle(elem, passTime,from,to,duration,tween){
+export function setStyle(elem, passTime,from,to,duration,tween,failCb){
     let keys = Object.keys(from);
     for(let i = 0;i<keys.length;i++){
         let prop = keys[i];
         let fromValue = from[prop],
             toValue = to[prop];
+        if(!fromValue || !toValue) continue;
         if(!canAnimation(prop)){
-            passTime == duration && (elem.style[prop] = to[prop]);
+            if(isFunction(failCb)){
+                failCb.call(elem,elem,prop,from,to,passTime,duration);
+            }
             continue;
         }
         let unit = fromValue.match(matchUtil);
         let _from = parseFloat(fromValue),
             _to = parseFloat(toValue);
         if(!isNaN(_from) && !isNaN(_to)){
-            let result = tween(passTime,_from,_to,duration);
+            let result = tween(passTime,_from,_to - _from,duration);
             if(unit){
                 result += unit[0];
             }
