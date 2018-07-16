@@ -5,6 +5,7 @@ Httpplugin.install = function(Vue, option = {}){
     $http.get = http.get;
     $http.post = http.post;
     $http.all = http.all;
+    $http.axios = http.axios;
     if(option.needNative === true){
         $http.$get = http.$get;
         $http.$post = http.$post;

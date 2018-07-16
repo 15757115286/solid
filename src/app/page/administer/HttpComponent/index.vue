@@ -14,6 +14,8 @@
                 <input type="password" v-model="password">
             </div>
             <input type="checkbox" v-model="needIntercept">是否开启过滤
+            <button @click="test01()">get測試01</button>
+            <button @click="test02()">post測試01</button>
             <button @click="test03()">get測試</button>
             <button @click="test04()">post测试04</button>
             <br>
@@ -35,6 +37,32 @@ export default {
     };
   },
   methods: {
+    test01(){
+      this.$http
+        .get(
+          this.url,
+          this.needIntercept
+        )
+        .do(res => {
+          console.log(res);
+        })
+        .error(rej => {
+          console.log("error", rej);
+        });
+    },
+    test02(){
+      this.$http
+        .post(
+          this.url,
+          this.needIntercept
+        )
+        .do(res => {
+          console.log(res);
+        })
+        .error(rej => {
+          console.log("error", rej);
+        });
+    },
     test03() {
       this.$http
         .get(

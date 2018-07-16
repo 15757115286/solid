@@ -53,15 +53,22 @@ function $post(url, params = {}, config = {}) {
 
 //axios的get，返回的Promise对象
 function $get(url, params = {}, config = {}) {
-    config.params = params;
+    (config || (config = {})).params = params;
     return instance.get(url, config);
+}
+
+//处理参数问题。如果没有参数但是有config的话，那么必须在params位传入null。
+function compatParams(params, config, intercept){
+    if (typeof params == 'boolean') [intercept, params] = [params, {}];
+    if (typeof config == 'boolean') [intercept, config] = [config, {}];
+    return [ params, config, intercept ]
 }
 
 //自己封装好的post,返回的是一个generate对象，调用do函数来增加回调
 //如果是开启拦截的才会调用error函数，如果不开启拦截，
 //那么错误信息会通过do函数返回，没必要执行2遍相同的操作。
 function post(url, params = {}, config = {}, intercept = true) {
-    if (typeof config == 'boolean') [intercept, config] = [config, {}];
+    [ params, config, intercept ] = compatParams(params, config, intercept);
     let promise = new generate(intercept);
     promise.url = url;
     $post(url, params, config).then(res => {
@@ -85,7 +92,7 @@ function post(url, params = {}, config = {}, intercept = true) {
 
 //自己封装好的get,返回的是一个generate对象，调用do函数来增加回调
 function get(url, params = {}, config = {}, intercept = true) {
-    if (typeof config == 'boolean') [intercept, config] = [config, {}];
+    [ params, config, intercept ] = compatParams(params, config, intercept);
     let promise = new generate(intercept);
     promise.url = url;
     $get(url, params, config).then(res => {
@@ -166,4 +173,4 @@ generate.prototype.error = function (error) {
     return this;
 }
 
-export default { $post, post, $get, get ,all}
+export default { $post, post, $get, get ,all, axios:instance}
