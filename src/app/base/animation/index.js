@@ -291,7 +291,7 @@ cssAnimation.toggle = function (elem ,duration) {
             width: '0px',
             opacity: '0'
         }
-        if(style.display != 'block' || style.display != 'flex'){
+        if(style.display != 'block' && style.display != 'flex'){
             hiddenCss.display = 'inline-block';
         }
         oldStyle = utils.getStyles(elem, hiddenCss);
