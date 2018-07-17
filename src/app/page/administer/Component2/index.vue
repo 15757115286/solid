@@ -12,6 +12,7 @@
             <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
             <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
         </div>
+        <span ref="span0"  style="background-color:red;">fdsfsdfsdfsd111111</span>
         <div id="test" ref="test"> 
         </div>
         <div ref="div1" id="hid">
@@ -53,7 +54,8 @@ export default {
             console.log(size);
         },
         toggle(){
-            this.$A(this.$refs.div).toggle(400);
+            //this.$A(this.$refs.div).toggle(400);
+            this.$A(this.$refs.span0).toggle();
         },
         get(){
             let style = getComputedStyle(this.$refs.test);
