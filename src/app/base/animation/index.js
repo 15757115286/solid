@@ -1,7 +1,14 @@
 import * as utils from './util';
 //anmation动画
 const mainQueueName = 'def';
-function animation(elem, props, duration, delay, callback, tween) {
+let FPS = 60;
+
+//关于delay的一些说明：这里默认是相同元素同时执行的只有1个动画（可以执行多个属性）
+//如果是有多个动画，那么则进行排队（不同元素不用排队），所以如果第一个动画有delay属性
+//那么会先执行第二个动画，如果第二个动画的执行总时间比第一个动画的delay长的话，那么
+//接下来会直接运行第一个动画，所以说delay在new Animation()的时候就已经在计算时间了，且
+//这个时间不会受到stop等影响，一直会减少
+function Animation(elem, props, duration, delay, callback, tween) {
     this.elem = elem;
     this.props = props;
     this.duration = duration;
@@ -13,28 +20,26 @@ function animation(elem, props, duration, delay, callback, tween) {
         let $id = findId(elem);
         if ($id > 0) {
             queueName = 'queue_' + $id;
-            animation.queue[queueName] = animation.queue[queueName] || [];
+            Animation.queue[queueName] = Animation.queue[queueName] || [];
         } else {
-            animation.$elems.push({
+            Animation.$elems.push({
                 el: elem,
-                id: animation.$elemId++
+                id: Animation.$elemId++
             });
         }
-        animation.timer(this, queueName);
+        Animation.timer(this, queueName);
     }, delay);
 }
 
-animation.$elemId = 1;
+Animation.$elemId = 1;
 
-animation.$elems = [];
+Animation.$elems = [];
 
-animation.fps = 60;
-
-animation.running = false;
+Animation.running = false;
 
 function findId(elem) {
     let id = 0;
-    animation.$elems.some((_elem) => {
+    Animation.$elems.some((_elem) => {
         if (_elem.el === elem) {
             id = _elem.id;
             return true;
@@ -45,10 +50,10 @@ function findId(elem) {
 }
 
 function deleteElem(elem) {
-    let length = animation.$elems.length;
+    let length = Animation.$elems.length;
     for (let i = 0; i < length; i++) {
-        if (animation.$elems[i].el === elem) {
-            animation.$elems.splice(i, 1);
+        if (Animation.$elems[i].el === elem) {
+            Animation.$elems.splice(i, 1);
             return false;
         }
     }
@@ -57,42 +62,42 @@ function deleteElem(elem) {
 function doCheck(elem) {
     let $id = findId(elem);
     let $queueName = 'queue_' + $id;
-    let $queue = animation.queue[$queueName];
+    let $queue = Animation.queue[$queueName];
     let isArray = Array.isArray($queue);
     if (isArray && $queue.length == 0) {
         deleteElem(elem);
-        Reflect.deleteProperty(animation.queue, $queueName);
+        Reflect.deleteProperty(Animation.queue, $queueName);
     } else if (isArray && $queue.length > 0 && !isInDef(elem)) {
         let fn = $queue.shift();
         fn.$startTime = utils.now();
         fn.$style = utils.getStyle(elem, fn.$props);
-        animation.queue[mainQueueName].push(fn);
+        Animation.queue[mainQueueName].push(fn);
     }
-    animation.start();
+    Animation.start();
 }
 
 function isInDef(elem) {
-    return animation.queue[mainQueueName].some(fn => {
+    return Animation.queue[mainQueueName].some(fn => {
         return fn.$elem === elem;
     })
 }
 
-animation.setFps = function (fps) {
+Animation.setFps = function (fps) {
     if (utils.isNumber(fps) && fps > 0) {
-        animation.fps = fps;
+        FPS = fps;
     }
 }
 
-animation.isRunning = function () {
-    return animation.running;
+Animation.isRunning = function () {
+    return Animation.running;
 }
 
 //动画的队列，def为主队列。其他队列会在特定时间后被调往主队列执行动画任务
-animation.queue = {
+Animation.queue = {
     [mainQueueName]: []
 }
 
-animation.timerId = null;
+Animation.timerId = null;
 
 function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
     switch (prop) {
@@ -113,12 +118,12 @@ function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
 //前往任务队列执行的动画函数，会在每一帧中计算出元素的样式
 //并在一个动画结束的时候回去查找在别的队列是否有该元素的动画
 //如果有就调度过来执行
-animation.timer = function (animaObj, queueName) {
+Animation.timer = function (animaObj, queueName) {
     let elem = animaObj.elem;
     let props = animaObj.props;
     let duration = animaObj.duration;
     let tween = animaObj.tween;
-    let queue = animation.queue[utils.isString(queueName) ? queueName : mainQueueName];
+    let queue = Animation.queue[utils.isString(queueName) ? queueName : mainQueueName];
     let fn = function () {
         let dataNow = utils.now();
         let passTime = dataNow - fn.$startTime;
@@ -127,7 +132,7 @@ animation.timer = function (animaObj, queueName) {
         utils.setStyle(elem, passTime, fn.$style.from, fn.$style.to, fn.$duration, tween, cantAnimationCallback);
         return isContinue;
     }
-    if (queue === animation.queue[mainQueueName]) {
+    if (queue === Animation.queue[mainQueueName]) {
         fn.$startTime = utils.now();
         fn.$style = utils.getStyle(elem, props);
     }
@@ -142,8 +147,8 @@ animation.timer = function (animaObj, queueName) {
 let i = 0;
 
 //唯一执行的定时器任务，会去调度主队列中的timer函数
-animation.tick = function () {
-    let queue = animation.queue[mainQueueName];
+Animation.tick = function () {
+    let queue = Animation.queue[mainQueueName];
     for (let i = 0; i < queue.length; i++) {
         let task = queue[i];
         let isContinue = task();
@@ -151,43 +156,122 @@ animation.tick = function () {
         if (!isContinue) {
             queue.splice(i--, 1);
             if (utils.isFunction(task.callback)) {
-                task.callback.call(fn.$elem);
+                task.$callback.call(fn.$elem);
             }
             doCheck(task.$elem);
         }
     }
 
-    queue.length == 0 && animation.stop();
+    queue.length == 0 && Animation.stop();
 }
 
-animation.start = function () {
-    if (animation.timerId == null) {
-        animation.running = true;
+Animation.start = function () {
+    if (Animation.timerId == null) {
+        Animation.running = true;
         let _now = utils.now();
-        animation.queue[mainQueueName].forEach(fn => {
+        Animation.queue[mainQueueName].forEach(fn => {
             fn.$startTime = _now;
         })
-        animation.timerId = setInterval(animation.tick, 1000 / animation.fps);
+        Animation.timerId = setInterval(Animation.tick, 1000 / FPS);
     }
+    return this;
 }
 
-animation.stop = function () {
-    animation.running = false;
-    if (animation.timerId) {
-        clearInterval(animation.timerId);
-        animation.timerId = null;
+Animation.stop = function () {
+    Animation.running = false;
+    if (Animation.timerId) {
+        clearInterval(Animation.timerId);
+        Animation.timerId = null;
         let _now = utils.now();
-        animation.queue[mainQueueName].forEach(fn => {
+        Animation.queue[mainQueueName].forEach(fn => {
             fn.$duration = Math.max(fn.$duration - (_now - fn.$startTime), 0);
             fn.$style = utils.getStyle(fn.$elem, fn.$props);
         })
     }
+    return this;
 }
 
-animation.durations = {
+Animation.durations = {
     fast: 100,
     slow: 500,
-    default: 300
+    _default: 300
 }
 
-export default animation;
+Animation.option = {
+    delay:0,
+    tween:utils.tween.Linear,
+    callback:null
+}
+
+//-------------------------------封装animation-----------------------------
+
+function cssAnimation(elem){
+    if(this instanceof cssAnimation){
+        this.elem = elem;
+    }else{
+        return new cssAnimation(elem);
+    }
+}
+
+cssAnimation.prototype.animation = function(props,duration = '_default',option = {}){
+    option = utils.isObject(option) ? option : {};
+    let mergeOption = Object.assign({},Animation.option,option);
+    if(utils.isNumber(duration)){
+        duration = duration >= 0 ? duration : 0;
+    }else{
+        let key = duration in Animation.durations ? duration : '_default';
+        duration = Animation.durations[key]
+    }
+    new Animation(this.elem,props,duration,mergeOption.delay,mergeOption.callback,mergeOption.tween);
+    return this;
+}
+
+//styles为对象
+function setStyle(elem,styles){
+    for(let key in styles){
+        if(key in elem.style){
+            elem.style[key] = styles[key];
+        }
+    }
+}
+
+//props为对象
+function getStyle(elem,props){
+    let result = {};
+    let style = elem.style;
+    for(let key in props){
+        if(key in style){
+            result[key] = style[key];
+        }
+    }
+    return result;
+}
+
+cssAnimation.prototype.getSize = cssAnimation.getSize = function(el){
+    let elem = el || this.elem;
+    let style = getComputedStyle(elem);
+    if(style.display != 'none'){
+        return {height:style.height,width:style.width};
+    }else{
+        let hideStyle = {
+            display:'inherit',
+            visibility:'hidden',
+            position:'absolute'
+        }
+        let oldStyle = getStyle(elem,hideStyle);
+        setStyle(elem,hideStyle);
+        style = getComputedStyle(elem);
+        let result = {
+            width:elem.clientWidth || style.width,
+            height:elem.clientHeight || style.height
+        }
+        setStyle(elem,oldStyle);
+        return result;
+    }
+}
+
+cssAnimation.prototype.start = cssAnimation.start = Animation.start;
+cssAnimation.prototype.stop = cssAnimation.stop = Animation.stop;
+cssAnimation.prototype.Animation = cssAnimation.Animation = Animation;
+
+export default cssAnimation;

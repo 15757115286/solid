@@ -13,11 +13,14 @@ export function isObject(obj){
     return toString.call(obj) == '[object Object]';
 }
 export function isNumber(num){
-    return toString.call(obj) == '[object Number]';
+    return toString.call(num) == '[object Number]';
 }
 export function isString(str){
     return toString.call(str) == '[object String]';
 }
+export function isUndefined(unde){
+    return toString.call(unde) == '[object Undefined]';
+} 
 
 export function getStyle(elem,props){
     let style = getComputedStyle(elem);
@@ -50,7 +53,7 @@ export function setStyle(elem, passTime,from,to,duration,tween,failCb){
         let prop = keys[i];
         let fromValue = from[prop],
             toValue = to[prop];
-        if(!fromValue || !toValue) continue;
+        if(isUndefined(fromValue) || isUndefined(toValue)) continue;
         if(!canAnimation(prop)){
             if(isFunction(failCb)){
                 failCb.call(elem,elem,prop,from,to,passTime,duration);

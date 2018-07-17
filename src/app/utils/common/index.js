@@ -24,3 +24,9 @@ export function isSuccess(res){
 export function isFunction(fn){
     return toString.call(fn) === '[object Function]';
 }
+export function isNumber(num){
+    return toString.call(num) === '[object Number]'
+}
+export function isObject(obj){
+    return toString.call(obj) === '[object Object]'
+}
