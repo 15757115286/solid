@@ -59,6 +59,10 @@ export default {
   },
   methods: {
     toggle(menu, event) {
+      let elem = event.target;
+      if(elem.nodeName == 'A'){
+        this.$A.getSize(elem.nextElementSibling);
+      }
       if(menu.stopToggle) return;
       menu && (menu.open = !menu.open);
     },

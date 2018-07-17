@@ -38,7 +38,7 @@ export function getStyle(elem,props){
 
 let matchUtil = /\D+$/;
 
-let cantAnimationProps = ['display'];
+let cantAnimationProps = ['display','overflow'];
 
 function canAnimation(prop){
     if(isString(prop) && cantAnimationProps.indexOf(prop) == -1){
@@ -72,6 +72,28 @@ export function setStyle(elem, passTime,from,to,duration,tween,failCb){
         }
     }
 }
+
+//styles为对象
+export function setStyles(elem,styles){
+    for(let key in styles){
+        if(key in elem.style){
+            elem.style[key] = styles[key];
+        }
+    }
+}
+
+//props为对象
+export function getStyles(elem,props){
+    let result = {};
+    let style = elem.style;
+    for(let key in props){
+        if(key in style){
+            result[key] = style[key];
+        }
+    }
+    return result;
+}
+
 /**
  * 流行的动画的缓动公式
  * t:动画的当前帧数（已经执行的时间）

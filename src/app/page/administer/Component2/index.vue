@@ -1,16 +1,30 @@
 <template>
     <div>
-        <span>这个是测试组件2</span>
-        <div id="block1" ref="div"></div>
+        <div>这个是测试组件2</div>
+        <div id="block1" ref="div">
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+            <p>fsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>
+        </div>
+        <div id="test" ref="test"> 
+        </div>
         <div ref="div1" id="hid">
-            <div id="block2" >
-            </div>
+            <div id="block2" ></div>
+            <div id="block2" ></div><p>fdsffsdf</p>
         </div>
         <button @click="test01()">测试</button>
         <button @click="test02()">停止</button>
         <button @click="test04()">开始</button>
         <button @click="test03()">测试03</button>
         <button @click="test05()">获取隐藏元素宽高</button>
+        <button @click="toggle()">toggle测试</button>
+        <button @click="get()">get测试</button>
     </div>
 </template>
 <script>
@@ -37,14 +51,22 @@ export default {
         test05(){
             let size = this.$A.getSize(this.$refs.div1);
             console.log(size);
+        },
+        toggle(){
+            this.$A(this.$refs.div).toggle(400);
+        },
+        get(){
+            let style = getComputedStyle(this.$refs.test);
+            console.log(style.width,style.height);
+            this.$refs.test.style.height = '100px';
+            console.log(style.width,style.height);
+            this.$refs.test.style.height = '60px';
         }
     }
 }
 </script>
 <style scoped>
     #block1{
-        width: 100px;
-        height: 100px;
         background-color: aqua;
     }
      #block2{
@@ -54,6 +76,11 @@ export default {
     }
     #hid{
         display: none;
+    }
+    #test{
+        width: 50px;
+        height: 50px;
+        background-color: brown;
     }
 </style>
 

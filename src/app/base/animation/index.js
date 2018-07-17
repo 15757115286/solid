@@ -99,16 +99,24 @@ Animation.queue = {
 
 Animation.timerId = null;
 
+function deleteProps(from,to,prop){
+    Reflect.deleteProperty(from, prop);
+    Reflect.deleteProperty(to, prop);
+}
+
 function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
+    let finalValue = to[prop].trim();
     switch (prop) {
         case 'display':
-            let finalValue = to[prop].trim();
             if ((finalValue == 'none' && passTime == duration) ||
                 finalValue != 'none') {
                 elem.style[prop] = finalValue;
-                Reflect.deleteProperty(from, prop);
-                Reflect.deleteProperty(to, prop);
+                deleteProps(from,to,prop);
             }
+            break;
+        case 'overflow':
+            elem.style[prop] = finalValue;
+            deleteProps(from,to,prop);
             break;
         default:
             break;
@@ -155,8 +163,8 @@ Animation.tick = function () {
         task.$times++;
         if (!isContinue) {
             queue.splice(i--, 1);
-            if (utils.isFunction(task.callback)) {
-                task.$callback.call(fn.$elem);
+            if (utils.isFunction(task.$callback)) {
+                task.$callback.call(task.$elem);
             }
             doCheck(task.$elem);
         }
@@ -198,76 +206,104 @@ Animation.durations = {
 }
 
 Animation.option = {
-    delay:0,
-    tween:utils.tween.Linear,
-    callback:null
+    delay: 0,
+    tween: utils.tween.Linear,
+    callback: null
 }
 
 //-------------------------------封装animation-----------------------------
 
-function cssAnimation(elem){
-    if(this instanceof cssAnimation){
+function cssAnimation(elem) {
+    if (this instanceof cssAnimation) {
         this.elem = elem;
-    }else{
+    } else {
         return new cssAnimation(elem);
     }
 }
 
-cssAnimation.prototype.animation = function(props,duration = '_default',option = {}){
+cssAnimation.prototype.animation = function (props, duration = '_default', option = {}) {
     option = utils.isObject(option) ? option : {};
-    let mergeOption = Object.assign({},Animation.option,option);
-    if(utils.isNumber(duration)){
+    let mergeOption = Object.assign({}, Animation.option, option);
+    if (utils.isNumber(duration)) {
         duration = duration >= 0 ? duration : 0;
-    }else{
+    } else {
         let key = duration in Animation.durations ? duration : '_default';
         duration = Animation.durations[key]
     }
-    new Animation(this.elem,props,duration,mergeOption.delay,mergeOption.callback,mergeOption.tween);
+    new Animation(this.elem, props, duration, mergeOption.delay, mergeOption.callback, mergeOption.tween);
     return this;
 }
 
-//styles为对象
-function setStyle(elem,styles){
-    for(let key in styles){
-        if(key in elem.style){
-            elem.style[key] = styles[key];
-        }
-    }
-}
 
-//props为对象
-function getStyle(elem,props){
-    let result = {};
-    let style = elem.style;
-    for(let key in props){
-        if(key in style){
-            result[key] = style[key];
-        }
-    }
-    return result;
-}
-
-cssAnimation.prototype.getSize = cssAnimation.getSize = function(el){
+cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
+    let getStyle = utils.getStyles,
+        setStyle = utils.setStyles;
     let elem = el || this.elem;
     let style = getComputedStyle(elem);
-    if(style.display != 'none'){
-        return {height:style.height,width:style.width};
-    }else{
+    if (style.display != 'none') {
+        return {
+            height: style.height,
+            width: style.width
+        };
+    } else {
         let hideStyle = {
-            display:'inherit',
-            visibility:'hidden',
-            position:'absolute'
+            display: 'block',
+            visibility: 'hidden',
+            position: 'absoulte'
         }
-        let oldStyle = getStyle(elem,hideStyle);
-        setStyle(elem,hideStyle);
-        style = getComputedStyle(elem);
+        let oldStyle = getStyle(elem, hideStyle);
+        setStyle(elem, hideStyle);
         let result = {
-            width:elem.clientWidth || style.width,
-            height:elem.clientHeight || style.height
+            width: style.width,
+            height: style.height
         }
-        setStyle(elem,oldStyle);
+        setStyle(elem, oldStyle);
         return result;
     }
+}
+
+cssAnimation.toggle = function (elem ,duration) {
+    let that = cssAnimation(elem);
+    let style = getComputedStyle(elem);
+    let oldStyle = null;
+    if (style.display == 'none') {
+        let size = that.getSize(elem);
+        let showCss = {
+            display: 'block',
+            height: size.height,
+            width: size.width,
+            opacity:1,
+            overflow:'hidden'
+        }
+        oldStyle = utils.getStyles(elem, showCss);
+        elem.style.opacity = 0;
+        elem.style.height = elem.style.width = '0px';
+        that.animation(showCss,duration,{
+            callback:()=>{
+                utils.setStyles(elem,oldStyle);
+                elem.style.display = 'block';
+            }
+        })
+    } else {
+        let hiddenCss = {
+            overflow: 'hidden',
+            height: '0px',
+            width: '0px',
+            opacity: '0'
+        }
+        oldStyle = utils.getStyles(elem, hiddenCss);
+        elem.style.overflow = hiddenCss.overflow;
+        that.animation( hiddenCss, duration, {
+            callback: () => {
+                utils.setStyles(elem, oldStyle);
+                elem.style.display = 'none';
+            }
+        })
+    }
+}
+
+cssAnimation.prototype.toggle = function(duration){
+    cssAnimation.toggle(this.elem,duration);
 }
 
 cssAnimation.prototype.start = cssAnimation.start = Animation.start;
