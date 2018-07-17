@@ -2,6 +2,7 @@
     <div>
         <span>这个是测试组件2</span>
         <div id="block1" ref="div"></div>
+        <div id="block2" ref="div1"></div>
         <button @click="test01()">测试</button>
         <button @click="test02()">停止</button>
         <button @click="test04()">开始</button>
@@ -14,7 +15,8 @@ export default {
     name:'animationComponent',
     methods:{
         test01(){
-            let ani = new animation(this.$refs.div,{'margin-left':'200px','width':'200px',display:'none'},1000);
+            let ani = new animation(this.$refs.div,{'margin-left':'200px',display:'none'},2000,100);
+            let ani2 = new animation(this.$refs.div1,{'margin-left':'200px',display:'none'},1000);
             animation.start();
         },
         test02(){
@@ -22,6 +24,7 @@ export default {
         },
         test03(){
             let ani = new animation(this.$refs.div,{'margin-left':'0px','width':'100px',display:'block'},1000);
+            let ani2 = new animation(this.$refs.div1,{'margin-left':'0px','width':'100px',display:'block'},300);
             animation.start();
         },
         test04(){
@@ -35,6 +38,11 @@ export default {
         width: 100px;
         height: 100px;
         background-color: aqua;
+    }
+     #block2{
+        width: 100px;
+        height: 100px;
+        background-color: blue;
     }
 </style>
 

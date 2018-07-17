@@ -1,23 +1,27 @@
 import * as utils from './util';
 //anmation动画
-function animation(elem, props, duration, delay, tween) {
+const mainQueueName = 'def';
+function animation(elem, props, duration, delay, callback, tween) {
     this.elem = elem;
     this.props = props;
     this.duration = duration;
     this.tween = tween || utils.tween.Linear;
-    this.delay = delay;
-    let queueName = 'def';
-    let $id = findId(elem);
-    if ($id > 0) {
-        queueName = 'queue_' + $id;
-        animation.queue[queueName] = animation.queue[queueName] || [];
-    } else {
-        animation.$elems.push({
-            el: elem,
-            id: animation.$elemId++
-        });
-    }
-    animation.timer(this, queueName);
+    this.delay = delay || 0;
+    this.callback = callback;
+    let queueName = mainQueueName;
+    setTimeout(() => {
+        let $id = findId(elem);
+        if ($id > 0) {
+            queueName = 'queue_' + $id;
+            animation.queue[queueName] = animation.queue[queueName] || [];
+        } else {
+            animation.$elems.push({
+                el: elem,
+                id: animation.$elemId++
+            });
+        }
+        animation.timer(this, queueName);
+    }, delay);
 }
 
 animation.$elemId = 1;
@@ -61,17 +65,14 @@ function doCheck(elem) {
     } else if (isArray && $queue.length > 0 && !isInDef(elem)) {
         let fn = $queue.shift();
         fn.$startTime = utils.now();
-        fn.$style = utils.getStyle(elem,fn.$props);
-        //放在下次渲染时机
-        setTimeout(()=>{
-            animation.queue['def'].push(fn);
-            animation.start();
-        })
+        fn.$style = utils.getStyle(elem, fn.$props);
+        animation.queue[mainQueueName].push(fn);
     }
+    animation.start();
 }
 
-function isInDef(elem){
-    return animation.queue['def'].some(fn=>{
+function isInDef(elem) {
+    return animation.queue[mainQueueName].some(fn => {
         return fn.$elem === elem;
     })
 }
@@ -82,12 +83,13 @@ animation.setFps = function (fps) {
     }
 }
 
-animation.isRunning = function(){
+animation.isRunning = function () {
     return animation.running;
 }
 
+//动画的队列，def为主队列。其他队列会在特定时间后被调往主队列执行动画任务
 animation.queue = {
-    def: []
+    [mainQueueName]: []
 }
 
 animation.timerId = null;
@@ -108,12 +110,15 @@ function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
     }
 }
 
+//前往任务队列执行的动画函数，会在每一帧中计算出元素的样式
+//并在一个动画结束的时候回去查找在别的队列是否有该元素的动画
+//如果有就调度过来执行
 animation.timer = function (animaObj, queueName) {
     let elem = animaObj.elem;
     let props = animaObj.props;
     let duration = animaObj.duration;
     let tween = animaObj.tween;
-    let queue = animation.queue[utils.isString(queueName) ? queueName : 'def'];
+    let queue = animation.queue[utils.isString(queueName) ? queueName : mainQueueName];
     let fn = function () {
         let dataNow = utils.now();
         let passTime = dataNow - fn.$startTime;
@@ -122,24 +127,32 @@ animation.timer = function (animaObj, queueName) {
         utils.setStyle(elem, passTime, fn.$style.from, fn.$style.to, fn.$duration, tween, cantAnimationCallback);
         return isContinue;
     }
-    if(queue === animation.queue['def']){
+    if (queue === animation.queue[mainQueueName]) {
         fn.$startTime = utils.now();
         fn.$style = utils.getStyle(elem, props);
     }
     fn.$props = props;
     fn.$elem = elem;
     fn.$duration = duration;
+    fn.$times = 0;
+    fn.$callback = animaObj.callback;
     queue.push(fn);
     doCheck(elem);
 }
+let i = 0;
 
+//唯一执行的定时器任务，会去调度主队列中的timer函数
 animation.tick = function () {
-    let queue = animation.queue['def'];
+    let queue = animation.queue[mainQueueName];
     for (let i = 0; i < queue.length; i++) {
         let task = queue[i];
         let isContinue = task();
+        task.$times++;
         if (!isContinue) {
             queue.splice(i--, 1);
+            if (utils.isFunction(task.callback)) {
+                task.callback.call(fn.$elem);
+            }
             doCheck(task.$elem);
         }
     }
@@ -151,7 +164,7 @@ animation.start = function () {
     if (animation.timerId == null) {
         animation.running = true;
         let _now = utils.now();
-        animation.queue['def'].forEach(fn=>{
+        animation.queue[mainQueueName].forEach(fn => {
             fn.$startTime = _now;
         })
         animation.timerId = setInterval(animation.tick, 1000 / animation.fps);
@@ -164,11 +177,17 @@ animation.stop = function () {
         clearInterval(animation.timerId);
         animation.timerId = null;
         let _now = utils.now();
-        animation.queue['def'].forEach(fn=>{
-            fn.$duration = fn.$duration - (_now - fn.$startTime);
-            fn.$style = utils.getStyle(fn.$elem,fn.$props);
+        animation.queue[mainQueueName].forEach(fn => {
+            fn.$duration = Math.max(fn.$duration - (_now - fn.$startTime), 0);
+            fn.$style = utils.getStyle(fn.$elem, fn.$props);
         })
     }
+}
+
+animation.durations = {
+    fast: 100,
+    slow: 500,
+    default: 300
 }
 
 export default animation;
