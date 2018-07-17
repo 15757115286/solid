@@ -242,8 +242,8 @@ cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
     let style = getComputedStyle(elem);
     if (style.display != 'none') {
         return {
-            height: style.height,
-            width: style.width
+            width: style.width,
+            height: style.height
         };
     } else {
         let hideStyle = {

@@ -49,7 +49,7 @@ export default {
             this.$A.start();
         },
         test05(){
-            let size = this.$A.getSize(this.$refs.div1);
+            let size = this.$A.getSize(this.$refs.div);
             console.log(size);
         },
         toggle(){
