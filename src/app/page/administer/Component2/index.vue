@@ -56,9 +56,7 @@ export default {
         toggle(){
             this.$A(this.$refs.div).toggle(400);
             this.$A(this.$refs.span0).toggle(400);
-            this.$A(this.$refs.div).toggle(400);
-            this.$A(this.$refs.span0).toggle(400);
-            this.$A(this.$refs.div).toggle(400);
+             this.$A(this.$refs.div).toggle(400);
             this.$A(this.$refs.span0).toggle(400);
         },
         get(){

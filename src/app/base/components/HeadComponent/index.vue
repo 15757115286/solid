@@ -4,12 +4,11 @@
             <img height="24px" :src="headImg"  alt="head logo">
             <a>Admin</a>
         </div>
-        <div class="user-info" @mouseenter="enter()" @mouseleave="leave()">
+        <div class="user-info" @mouseenter="mouseenter()" @mouseleave="mouseleave()">
             <img :src="personImg" alt="user logo" class="user-img">
             <span class="user-text">你好，曹敏</span>
             <i class="fa fa-caret-down arrow-down" aria-hidden="true"></i>
-            <ul class="menu-down" ref="menuDown" :style="{display : show ? 'block' : 'none'}"
-            @click="show = false">
+            <ul class="menu-down" ref="menuDown" @click="click()">
                 <li><i class="fa fa-user-o" aria-hidden="true"></i><span>用户信息</span></li>
                 <li><i class="fa fa-cog" aria-hidden="true"></i><span>设置</span></li>
                 <hr>
@@ -36,11 +35,14 @@ export default {
         changeLocal(language){
             this.$store.commit('changeLan',language);
         },
-        enter(){
-            this.show = true;
+        mouseenter(){
+            this.$A(this.$refs.menuDown).show(100);
         },
-        leave(){
-            this.show = false;
+        mouseleave(){
+            this.$A(this.$refs.menuDown).hidden(100);
+        },
+        click(){
+            this.$A(this.$refs.menuDown).hidden(100);
         },
         logout(){
             this.$store.dispatch('logout').then(res=>{
@@ -114,11 +116,14 @@ export default {
         color: #333;
         border-radius: 5px;
         padding: 5px 0;
+          display: none;
     }
     .menu-down li{
         padding :8px 20px 8px 15px;
         transition : background-color .3s;
         user-select: none;
+        overflow: hidden;
+        white-space: nowrap;
     }
     .menu-down li i:first-child{
         margin-right: 5px;

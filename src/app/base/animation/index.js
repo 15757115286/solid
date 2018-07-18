@@ -82,7 +82,7 @@ Animation.queue = {
 
 Animation.timerId = null;
 
-function deleteProps(from,to,prop){
+function deleteProps(from, to, prop) {
     Reflect.deleteProperty(from, prop);
     Reflect.deleteProperty(to, prop);
 }
@@ -94,12 +94,12 @@ function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
             if ((finalValue == 'none' && passTime == duration) ||
                 finalValue != 'none') {
                 elem.style[prop] = finalValue;
-                deleteProps(from,to,prop);
+                deleteProps(from, to, prop);
             }
             break;
         case 'overflow':
             elem.style[prop] = finalValue;
-            deleteProps(from,to,prop);
+            deleteProps(from, to, prop);
             break;
         default:
             break;
@@ -262,80 +262,116 @@ cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
     }
 }
 
-function toggle(elem ,duration){
-    let that = cssAnimation(elem);
+function show(elem, duration) {
     let style = getComputedStyle(elem);
+    if(style.display != 'none') return void doNext(elem);
+    let that = cssAnimation(elem);
     let oldStyle = null;
     let display = utils.isBlock(elem) ? 'block' : 'inline-block';
-    if (style.display == 'none') {
-        let size = that.getSize(elem);
-        let showCss = {
-            display: display,
-            height: size.height,
-            width: size.width,
-            opacity:1,
-            overflow:'hidden'
-        }
-        oldStyle = utils.getStyles(elem, showCss);
-        elem.style.opacity = 0;
-        elem.style.height = elem.style.width = '0px';
-        that.animation(showCss,duration,{
-            callback:()=>{
-                utils.setStyles(elem,oldStyle);
 
-                elem.style.display = display;
-                doNext(elem);
-            }
-        })
-    } else {
-        let hiddenCss = {
-            overflow: 'hidden',
-            height: '0px',
-            width: '0px',
-            opacity: '0',
-            margin:'0px',
-            padding:'0px'
+    let size = that.getSize(elem);
+    let showCss = {
+        display: display,
+        height: size.height,
+        width: size.width,
+        opacity: 1,
+        overflow: 'hidden'
+    }
+    oldStyle = utils.getStyles(elem, showCss);
+    elem.style.opacity = 0;
+    elem.style.height = elem.style.width = '0px';
+    that.animation(showCss, duration, {
+        callback: () => {
+            utils.setStyles(elem, oldStyle);
+
+            elem.style.display = display;
+            doNext(elem);
         }
-        oldStyle = utils.getStyles(elem, hiddenCss);
-        elem.style.display = display;
-        elem.style.overflow = hiddenCss.overflow;
-        that.animation( hiddenCss, duration, {
-            callback: () => {
-                utils.setStyles(elem, oldStyle);
-                elem.style.display = 'none';
-                doNext(elem);
-            }
-        })
+    })
+}
+
+function hidden(elem ,duration) {
+    let style = getComputedStyle(elem);
+    if(style.display == 'none') return void doNext(elem);
+    let that = cssAnimation(elem);
+    let oldStyle = null;
+    let display = utils.isBlock(elem) ? 'block' : 'inline-block';
+    let direction = ['top','right','bottom','left']
+    let hiddenCss = {
+        overflow: 'hidden',
+        height: '0px',
+        width: '0px',
+        opacity: '0'
+    }
+    direction.forEach(dir=>{
+        hiddenCss['padding-' + dir] = '0px';
+        hiddenCss['marigin-' + dir] = '0px';
+    })
+    oldStyle = utils.getStyles(elem, hiddenCss);
+    elem.style.display = display;
+    elem.style.overflow = hiddenCss.overflow;
+    that.animation(hiddenCss, duration, {
+        callback: () => {
+            utils.setStyles(elem, oldStyle);
+            elem.style.display = 'none';
+            doNext(elem);
+        }
+    })
+}
+
+function toggle(elem, duration) {
+    let style = getComputedStyle(elem);
+    if (style.display == 'none') {
+        show(elem ,duration);
+    } else {
+        hidden(elem , duration);
     }
 }
 
-function doNext(elem){
+function doNext(elem) {
     let mapName = elem.$cacheId;
     let queue = cacheMap[mapName];
     let hasNext = Array.isArray(queue) && queue.length > 0;
-    if(hasNext){
+    if (hasNext) {
         queue.shift()();
-    }else{
-       Reflect.deleteProperty(cacheMap,elem.$cacheId);
-       Reflect.deleteProperty(elem,'$cacheId');
+    } else {
+        Reflect.deleteProperty(cacheMap, elem.$cacheId);
+        Reflect.deleteProperty(elem, '$cacheId');
     }
 }
 
 let cacheMap = {};
 let cacheId = 1;
-cssAnimation.toggle = function (elem ,duration) {
-    if(utils.isUndefined(elem.$cacheId)){
+
+function doQueue(elem,fn){
+    if (utils.isUndefined(elem.$cacheId)) {
         elem.$cacheId = 'cacheId' + cacheId++;
-        toggle(elem,duration);
-    }else{
+        fn();
+    } else {
         let mapName = elem.$cacheId;
         let queue = cacheMap[mapName] || (cacheMap[mapName] = []);
-        queue.push(toggle.bind(this,elem,duration));
+        queue.push(fn);
     }
 }
 
-cssAnimation.prototype.toggle = function(duration){
-    cssAnimation.toggle(this.elem,duration);
+cssAnimation.toggle = function (elem, duration) {
+    doQueue(elem,toggle.bind(elem,elem,duration));
+}
+cssAnimation.show = function(elem ,duration){
+    doQueue(elem,show.bind(elem,elem,duration));
+}
+cssAnimation.hidden = function(elem ,duration){
+    doQueue(elem,hidden.bind(elem,elem,duration));
+}
+
+cssAnimation.prototype.show = function (duration) {
+    cssAnimation.show(this.elem,duration);
+}
+cssAnimation.prototype.hidden = function(duration){
+    cssAnimation.hidden(this.elem,duration);
+}
+cssAnimation.prototype.toggle = function (duration) {
+    cssAnimation.toggle(this.elem, duration);
 }
 
 cssAnimation.prototype.start = cssAnimation.start = Animation.start;
