@@ -107,12 +107,15 @@ function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
     }
 }
 
-function doCheck(elem) {
+function doCheck(elem ,isComplete = false) {
     let $id = findId(elem);
     let $queueName = 'queue_' + $id;
     let $queue = Animation.queue[$queueName];
     let isArray = Array.isArray($queue);
-    if (isArray && $queue.length == 0) {
+    if(isComplete && utils.isUndefined($queue)){
+        deleteElem(elem);
+    }
+    if ( isArray && $queue.length == 0) {
         deleteElem(elem);
         Reflect.deleteProperty(Animation.queue, $queueName);
     } else if (isArray && $queue.length > 0 && !isInDef(elem)) {
@@ -167,7 +170,7 @@ Animation.tick = function () {
             if (utils.isFunction(task.$callback)) {
                 task.$callback.call(task.$elem);
             }
-            doCheck(task.$elem);
+            doCheck(task.$elem ,true);
         }
     }
 
