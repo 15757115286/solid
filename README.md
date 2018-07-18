@@ -44,3 +44,12 @@ get是这里进行的一次封装，我们使用 http.get(url,params,config?,int
 intercept默认为true，会把一些请求失败的默认跳转到失败页面，这样的话我们可以只关心正确的数据，从而只需关心业务方面的代码。
 这里的逻辑是按照自己的需求来实现的，可以自行修改。
 如果想配合vuex的action来使用的话，推荐用$post和$get，因为这两个方法返回的是action中可以接受的Promise对象。
+可以在vue实例中使用 this.$http.get()
+
+## animation模块
+
+animation是根据自己的一些需求编写的动画模块。具体的使用方法是this.$A(elem).animation(props,duration?,option?)。
+this代指的是vue实例。
+props是需要过渡的最终的css属性,duration为时间，option有3个参数 callback、tween、duration。分别代表的是动画结束后
+的回调，过渡函数（如'linear','back.easeIn','base.easeInOut'等）、延时时间（延时时间动画一创建就开始计算，不会受到stop等影响）
+特别封装了toggle,show,hidden函数，使用方法是this.$A(elem).toggle(duration?)。
