@@ -107,11 +107,14 @@ function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
     }
 }
 
+//只有在新增一个动画或者一个动画结束以后才会查询
 function doCheck(elem ,isComplete = false) {
     let $id = findId(elem);
     let $queueName = 'queue_' + $id;
     let $queue = Animation.queue[$queueName];
     let isArray = Array.isArray($queue);
+    //isComplete代表了动画的结束，如果此时还是没有队列那么可以删除
+    //否则的话第一次肯定会被删除，因为$queueName == mainQueueName != realQueueName
     if(isComplete && utils.isUndefined($queue)){
         deleteElem(elem);
     }
