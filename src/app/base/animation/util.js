@@ -47,6 +47,7 @@ function canAnimation(prop){
     return false;
 }
 
+
 export function setStyle(elem, passTime,from,to,duration,tween,failCb){
     let keys = Object.keys(from);
     for(let i = 0;i<keys.length;i++){
@@ -244,4 +245,81 @@ export const tween = {
             else return Tween.Bounce.easeOut(t * 2 - d, 0, c, d) * .5 + c * .5 + b;
         }
     }
+}
+
+const inlineMap = {
+    a:true,
+    abbr:true,
+    acronym:true,
+    b:true,
+    bdo:true,
+    big:true,
+    br:true,
+    cite:true,
+    code:true,
+    dfn:true,
+    em:true,
+    i:true,
+    img:true,
+    input:true,
+    kbd:true,
+    label:true,
+    map:true,
+    object:true,
+    q:true,
+    samp:true,
+    script:true,
+    select:true,
+    small:true,
+    span:true,
+    strong:true
+}
+
+const blockMap = {
+    address:true,
+    article:true,
+    aside:true,
+    blockquote:true,
+    canvas:true,
+    dd:true,
+    div:true,
+    dl:true,
+    dt:true,
+    fieldset:true,
+    figcaption:true,
+    figure:true,
+    footer:true,
+    form:true,
+    h1:true,
+    h2:true,
+    h3:true,
+    h4:true,
+    h5:true,
+    h6:true,
+    header:true,
+    hgroup:true,
+    hr:true,
+    li:true,
+    main:true,
+    nav:true,
+    noscript:true,
+    ol:true,
+    output:true,
+    p:true,
+    pre:true,
+    section:true,
+    table:true,
+    tfoot:true,
+    ul:true,
+    video:true
+}
+Object.freeze(inlineMap);
+Object.freeze(blockMap);
+export function isInline(tagName){
+    tagName = isString(tagName) ? tagName : tagName.tagName;
+    return inlineMap[tagName.toLowerCase()] || false;
+}
+export function isBlock(tagName){
+    tagName = isString(tagName) ? tagName : tagName.tagName;
+    return blockMap[tagName.toLowerCase()] || false;
 }

@@ -59,23 +59,6 @@ function deleteElem(elem) {
     }
 }
 
-function doCheck(elem) {
-    let $id = findId(elem);
-    let $queueName = 'queue_' + $id;
-    let $queue = Animation.queue[$queueName];
-    let isArray = Array.isArray($queue);
-    if (isArray && $queue.length == 0) {
-        deleteElem(elem);
-        Reflect.deleteProperty(Animation.queue, $queueName);
-    } else if (isArray && $queue.length > 0 && !isInDef(elem)) {
-        let fn = $queue.shift();
-        fn.$startTime = utils.now();
-        fn.$style = utils.getStyle(elem, fn.$props);
-        Animation.queue[mainQueueName].push(fn);
-    }
-    Animation.start();
-}
-
 function isInDef(elem) {
     return Animation.queue[mainQueueName].some(fn => {
         return fn.$elem === elem;
@@ -121,6 +104,23 @@ function cantAnimationCallback(elem, prop, from, to, passTime, duration) {
         default:
             break;
     }
+}
+
+function doCheck(elem) {
+    let $id = findId(elem);
+    let $queueName = 'queue_' + $id;
+    let $queue = Animation.queue[$queueName];
+    let isArray = Array.isArray($queue);
+    if (isArray && $queue.length == 0) {
+        deleteElem(elem);
+        Reflect.deleteProperty(Animation.queue, $queueName);
+    } else if (isArray && $queue.length > 0 && !isInDef(elem)) {
+        let fn = $queue.shift();
+        fn.$startTime = utils.now();
+        fn.$style = utils.getStyle(elem, fn.$props);//进入主队列才算动画开始（添加开始时间）
+        Animation.queue[mainQueueName].push(fn);
+    }
+    Animation.start();
 }
 
 //前往任务队列执行的动画函数，会在每一帧中计算出元素的样式
@@ -247,7 +247,7 @@ cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
         };
     } else {
         let hideStyle = {
-            display: 'block',
+            display: utils.isBlock(elem) ? 'block' : 'inline-block',
             visibility: 'hidden',
             position: 'absoulte'
         }
@@ -262,14 +262,15 @@ cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
     }
 }
 
-cssAnimation.toggle = function (elem ,duration) {
+function toggle(elem ,duration){
     let that = cssAnimation(elem);
     let style = getComputedStyle(elem);
     let oldStyle = null;
+    let display = utils.isBlock(elem) ? 'block' : 'inline-block';
     if (style.display == 'none') {
         let size = that.getSize(elem);
         let showCss = {
-            display: 'block',
+            display: display,
             height: size.height,
             width: size.width,
             opacity:1,
@@ -281,7 +282,9 @@ cssAnimation.toggle = function (elem ,duration) {
         that.animation(showCss,duration,{
             callback:()=>{
                 utils.setStyles(elem,oldStyle);
-                elem.style.display = 'block';
+
+                elem.style.display = display;
+                doNext(elem);
             }
         })
     } else {
@@ -289,19 +292,45 @@ cssAnimation.toggle = function (elem ,duration) {
             overflow: 'hidden',
             height: '0px',
             width: '0px',
-            opacity: '0'
-        }
-        if(style.display != 'block' && style.display != 'flex'){
-            hiddenCss.display = 'inline-block';
+            opacity: '0',
+            margin:'0px',
+            padding:'0px'
         }
         oldStyle = utils.getStyles(elem, hiddenCss);
+        elem.style.display = display;
         elem.style.overflow = hiddenCss.overflow;
         that.animation( hiddenCss, duration, {
             callback: () => {
                 utils.setStyles(elem, oldStyle);
                 elem.style.display = 'none';
+                doNext(elem);
             }
         })
+    }
+}
+
+function doNext(elem){
+    let mapName = elem.$cacheId;
+    let queue = cacheMap[mapName];
+    let hasNext = Array.isArray(queue) && queue.length > 0;
+    if(hasNext){
+        queue.shift()();
+    }else{
+       Reflect.deleteProperty(cacheMap,elem.$cacheId);
+       Reflect.deleteProperty(elem,'$cacheId');
+    }
+}
+
+let cacheMap = {};
+let cacheId = 1;
+cssAnimation.toggle = function (elem ,duration) {
+    if(utils.isUndefined(elem.$cacheId)){
+        elem.$cacheId = 'cacheId' + cacheId++;
+        toggle(elem,duration);
+    }else{
+        let mapName = elem.$cacheId;
+        let queue = cacheMap[mapName] || (cacheMap[mapName] = []);
+        queue.push(toggle.bind(this,elem,duration));
     }
 }
 
