@@ -26,11 +26,45 @@
         <button @click="test05()">获取隐藏元素宽高</button>
         <button @click="toggle()">toggle测试</button>
         <button @click="get()">get测试</button>
+        <div>
+            <h4>动画模式测试（宽度测试）</h4>
+            <div class="test-model" ref="testModel"></div>
+            <div>
+                <h5>时间</h5>
+                <input type="text" v-model="time">
+            </div>
+            <div>
+                <h5>模式选择</h5>
+                <div style="display:inline-block;margin-left:10px;" v-for="m in mode">
+                    <label>{{ m }}</label>
+                    <input type="radio" v-model="selectMode" :value="m">
+                </div>
+            </div>
+            <div>
+                <h5>ease选择</h5>
+                <div style="display:inline-block;margin-left:10px;" v-for="e in ease">
+                    <label>{{ e }}</label>
+                    <input type="radio" v-model="selectEase" :value="e">
+                </div>
+            </div>
+            <div>
+                <button @click="test06()">动画</button>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 export default {
     name:'animationComponent',
+    data(){
+        return {
+            ease:['easeIn','easeOut','easeInOut'],
+            mode:['linear','quad','cubic','quart','quint','sine','expo','circ','elastic','back','bounce'],
+            selectMode:'linear',
+            selectEase:'easeIn',
+            time:1000
+        }
+    },
     methods:{
         test01(){
             this.$A(this.$refs.div).animation({'margin-left':'200px',display:'none'},200)
@@ -65,6 +99,14 @@ export default {
             this.$refs.test.style.height = '100px';
             console.log(style.width,style.height);
             this.$refs.test.style.height = '60px';
+        },
+        test06(){
+            let tween = '';
+            if(this.selectMode == 'linear') tween = 'linear';
+            else tween = this.selectMode + '.' + this.selectEase;
+            this.$A(this.$refs.testModel).animation({width:'200px'},this.time,{tween,callback:()=>{
+                this.$refs.testModel.style.width = '100px';
+            }});
         }
     }
 }
@@ -85,6 +127,11 @@ export default {
         width: 50px;
         height: 50px;
         background-color: brown;
+    }
+    .test-model{
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
     }
 </style>
 

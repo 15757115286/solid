@@ -8,11 +8,12 @@ let FPS = 60;
 //那么会先执行第二个动画，如果第二个动画的执行总时间比第一个动画的delay长的话，那么
 //接下来会直接运行第一个动画，所以说delay在new Animation()的时候就已经在计算时间了，且
 //这个时间不会受到stop等影响，一直会减少
+//不支持合并属性，比如 padding:0，要写成padding-left ... 这样子的。
 function Animation(elem, props, duration, delay, callback, tween) {
     this.elem = elem;
     this.props = props;
     this.duration = duration;
-    this.tween = tween || utils.tween.Linear;
+    this.tween = utils.getTween(tween);
     this.delay = delay || 0;
     this.callback = callback;
     let queueName = mainQueueName;
@@ -207,7 +208,7 @@ Animation.durations = {
 
 Animation.option = {
     delay: 0,
-    tween: utils.tween.Linear,
+    tween: 'linear',
     callback: null
 }
 
@@ -221,10 +222,13 @@ function cssAnimation(elem) {
     }
 }
 
+const numTest = /^\d+(\.\d+)?$|^\.\d+$/;
+
 cssAnimation.prototype.animation = function (props, duration = '_default', option = {}) {
     option = utils.isObject(option) ? option : {};
     let mergeOption = Object.assign({}, Animation.option, option);
-    if (utils.isNumber(duration)) {
+    if (utils.isNumber(duration) || numTest.test(duration)) {
+        duration = parseFloat(duration);
         duration = duration >= 0 ? duration : 0;
     } else {
         let key = duration in Animation.durations ? duration : '_default';
@@ -233,7 +237,6 @@ cssAnimation.prototype.animation = function (props, duration = '_default', optio
     new Animation(this.elem, props, duration, mergeOption.delay, mergeOption.callback, mergeOption.tween);
     return this;
 }
-
 
 cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
     let getStyle = utils.getStyles,
@@ -283,7 +286,6 @@ function show(elem, duration) {
     that.animation(showCss, duration, {
         callback: () => {
             utils.setStyles(elem, oldStyle);
-
             elem.style.display = display;
             doNext(elem);
         }
@@ -335,7 +337,7 @@ function doNext(elem) {
     if (hasNext) {
         queue.shift()();
     } else {
-        Reflect.deleteProperty(cacheMap, elem.$cacheId);
+        elem.$cacheId && Reflect.deleteProperty(cacheMap, elem.$cacheId);
         Reflect.deleteProperty(elem, '$cacheId');
     }
 }
@@ -364,6 +366,12 @@ cssAnimation.hidden = function(elem ,duration){
     doQueue(elem,hidden.bind(elem,elem,duration));
 }
 
+cssAnimation.prototype.start = cssAnimation.start = Animation.start;
+
+cssAnimation.prototype.stop = cssAnimation.stop = Animation.stop;
+
+cssAnimation.prototype.Animation = cssAnimation.Animation = Animation;
+
 cssAnimation.prototype.show = function (duration) {
     cssAnimation.show(this.elem,duration);
 }
@@ -373,9 +381,5 @@ cssAnimation.prototype.hidden = function(duration){
 cssAnimation.prototype.toggle = function (duration) {
     cssAnimation.toggle(this.elem, duration);
 }
-
-cssAnimation.prototype.start = cssAnimation.start = Animation.start;
-cssAnimation.prototype.stop = cssAnimation.stop = Animation.stop;
-cssAnimation.prototype.Animation = cssAnimation.Animation = Animation;
 
 export default cssAnimation;
