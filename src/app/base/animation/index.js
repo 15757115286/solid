@@ -271,9 +271,9 @@ cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
     }
 }
 
-function show(elem, duration) {
+function show(elem, duration,showCallback,force) {
     let style = getComputedStyle(elem);
-    if(style.display != 'none') return void doNext(elem);
+    if(style.display != 'none' && !force) return void doNext(elem);
     let that = cssAnimation(elem);
     let oldStyle = null;
     let display = utils.isBlock(elem) ? 'block' : 'inline-block';
@@ -293,14 +293,17 @@ function show(elem, duration) {
         callback: () => {
             utils.setStyles(elem, oldStyle);
             elem.style.display = display;
+            if(utils.isFunction(showCallback)){
+                showCallback.call(elem);
+            }
             doNext(elem);
         }
     })
 }
 
-function hidden(elem ,duration) {
+function hidden(elem ,duration,hiddenCallback,force) {
     let style = getComputedStyle(elem);
-    if(style.display == 'none') return void doNext(elem);
+    if(style.display == 'none' && !force) return void doNext(elem);
     let that = cssAnimation(elem);
     let oldStyle = null;
     let display = utils.isBlock(elem) ? 'block' : 'inline-block';
@@ -322,17 +325,20 @@ function hidden(elem ,duration) {
         callback: () => {
             utils.setStyles(elem, oldStyle);
             elem.style.display = 'none';
+            if(utils.isFunction(hiddenCallback)){
+                hiddenCallback.call(elem);
+            }
             doNext(elem);
         }
     })
 }
 
-function toggle(elem, duration) {
+function toggle(elem, duration,showCallback,hiddenCallback,force) {
     let style = getComputedStyle(elem);
     if (style.display == 'none') {
-        show(elem ,duration);
+        show(elem ,duration,showCallback,force);
     } else {
-        hidden(elem , duration);
+        hidden(elem , duration,hiddenCallback,force);
     }
 }
 
@@ -362,14 +368,14 @@ function doQueue(elem,fn){
     }
 }
 
-cssAnimation.toggle = function (elem, duration) {
-    doQueue(elem,toggle.bind(elem,elem,duration));
+cssAnimation.toggle = function (elem, duration,showCallback,hiddenCallback,force = false) {
+    doQueue(elem,toggle.bind(elem,elem,duration,showCallback,hiddenCallback,force));
 }
-cssAnimation.show = function(elem ,duration){
-    doQueue(elem,show.bind(elem,elem,duration));
+cssAnimation.show = function(elem ,duration,callback,force = false){
+    doQueue(elem,show.bind(elem,elem,duration,callback,force));
 }
-cssAnimation.hidden = function(elem ,duration){
-    doQueue(elem,hidden.bind(elem,elem,duration));
+cssAnimation.hidden = function(elem ,duration,callback ,force = false){
+    doQueue(elem,hidden.bind(elem,elem,duration,callback,force));
 }
 
 cssAnimation.prototype.start = cssAnimation.start = Animation.start;
@@ -378,14 +384,14 @@ cssAnimation.prototype.stop = cssAnimation.stop = Animation.stop;
 
 cssAnimation.prototype.Animation = cssAnimation.Animation = Animation;
 
-cssAnimation.prototype.show = function (duration) {
-    cssAnimation.show(this.elem,duration);
+cssAnimation.prototype.show = function (duration,callback,force = false) {
+    cssAnimation.show(this.elem,duration,callback,force);
 }
-cssAnimation.prototype.hidden = function(duration){
-    cssAnimation.hidden(this.elem,duration);
+cssAnimation.prototype.hidden = function(duration,callback,force = false){
+    cssAnimation.hidden(this.elem,duration,callback,force);
 }
-cssAnimation.prototype.toggle = function (duration) {
-    cssAnimation.toggle(this.elem, duration);
+cssAnimation.prototype.toggle = function (duration,showCallback,hiddenCallback,force = false) {
+    cssAnimation.toggle(this.elem, duration,showCallback,hiddenCallback,force);
 }
 
 export default cssAnimation;
