@@ -23,6 +23,8 @@ export default {
     data(){
         return {
             mergeOption:{},
+            selected:null,
+            expand:null,
             selected:null
         }
     },
@@ -30,16 +32,15 @@ export default {
         RecursiveComponent
     },
     created(){
-        Object.assign(this.mergeOption,defaultOption,this.option);
-        bus.$on('selected',function(child){
+        this.selected = function(child){
             if(this.selected){
                 this.selected.selected = false;
             }
             this.selected = child;
             child.selected = true;
             this.$emit('selected',child);
-        }.bind(this));
-        bus.$on('expand',function(child,event){
+        }.bind(this);
+        this.expand = function(child,event){
             let target = event.target;
             let targetName = target.tagName.toLowerCase();
             let ul = targetName == 'i' ? target.parentElement.parentElement.nextElementSibling : 
@@ -51,7 +52,14 @@ export default {
                 animation && animation.hidden(150);
             }
             this.$emit('expand',child);
-        }.bind(this))
+        }.bind(this);
+        Object.assign(this.mergeOption,defaultOption,this.option);
+        bus.$on('selected',this.selected);
+        bus.$on('expand',this.expand);
+    },
+    destroyed(){
+        bus.$off('selected',this.selected);
+        bus.$off('expand',this.expand);
     }
 }
 </script>

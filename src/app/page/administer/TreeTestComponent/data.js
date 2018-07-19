@@ -1,3 +1,4 @@
+import order from '@/assets/img/order.png'
 export default [
     {
         id:1,
@@ -10,6 +11,7 @@ export default [
                 name:'第二层级-1',
                 expand:false,
                 selected:false,
+                imgPath:order,
                 children:[
                     {
                         id:6,
