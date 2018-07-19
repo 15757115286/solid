@@ -40,16 +40,15 @@ export default {
             this.$emit('selected',child);
         }.bind(this));
         bus.$on('expand',function(child,event){
-            console.log(child.expand);
             let target = event.target;
             let targetName = target.tagName.toLowerCase();
             let ul = targetName == 'i' ? target.parentElement.parentElement.nextElementSibling : 
                 target.parentElement.nextElementSibling;
             let animation = ul ? this.$A(ul) : null;
             if(child.expand){
-                animation && animation.show(150)
+                animation && animation.show(150);
             }else{
-                animation && animation.hidden(150)
+                animation && animation.hidden(150);
             }
             this.$emit('expand',child);
         }.bind(this))

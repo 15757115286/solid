@@ -316,7 +316,7 @@ function hidden(elem ,duration,hiddenCallback,force) {
     }
     direction.forEach(dir=>{
         hiddenCss['padding-' + dir] = '0px';
-        hiddenCss['marigin-' + dir] = '0px';
+        hiddenCss['margin-' + dir] = '0px';
     })
     oldStyle = utils.getStyles(elem, hiddenCss);
     elem.style.display = display;
@@ -368,6 +368,9 @@ function doQueue(elem,fn){
     }
 }
 
+//1先检查有没有相同的元素在执行toggle动画2如果没有就执行运行3如果有，则进行缓存函数
+//4等到上个动画结束时候从缓存中取出函数运行（在这之前同步执行上个函数的回调）5检查该元素是否还有动画
+//没有则删除$cacheId标志
 cssAnimation.toggle = function (elem, duration,showCallback,hiddenCallback,force = false) {
     doQueue(elem,toggle.bind(elem,elem,duration,showCallback,hiddenCallback,force));
 }

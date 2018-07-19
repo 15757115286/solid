@@ -8,6 +8,12 @@ export default function getMenuSource(){
             icon:'fa-bar-chart'
         },
         {
+            name:'树插件测试',
+            path:'/page/admin/tree',
+            hasChildren:false,
+            icon:'fa-bar-chart'
+        },
+        {
             name:'父菜单1',
             hasChildren:true,
             children:[
