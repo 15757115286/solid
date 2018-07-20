@@ -20,10 +20,13 @@ const defaultOption = {
     dirCloseIcon:'dirCloseIcon',//文件夹关图标路径别名
     transImgPath:null,//用来转化imgpath的函数，返回路径 提供当前节点
     parent:'parent',//父元素别名（如果没有，会自动添加）
-    changeImgPath:null,//用来改变imgpath的函数，返回路径 提供当前节点
-    needAnimation:false,//是否需要动画,
+    changeImgPath:null,//用来改变imgpath的函数，返回路径 提供当前节点（只会在expand中被应用，其他时候想改变图标只能改节点中的imgPath(child.imgPath = 'xxxx')）
+    needAnimation:true,//是否需要动画,
     isAsync:false,//是否是异步加载树节点
     loadData:null,//异步获取数据的方法，
+    level:'level',//节点所处的层级，如果提供的数据中已经有该属性则不会自动去添加（谨慎）,
+    beforeRender:null,//在每个节点被渲染前调用，提供节点和当前组件,在寻找图标路径前面执行
+    noData:'noData'//异步节点中判断是否还有数据（用来展示是否展开图标）
 }
 Object.freeze(defaultOption);
 export default defaultOption;
