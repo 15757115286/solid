@@ -8,6 +8,7 @@
             style="width:400px;height:500px;"></tree-component>
         <div>
             <button @click="deleteChecks()">删除勾选节点</button>
+            <button @click="addNode()">新增节点</button>
         </div>
     </div>
 </template>
@@ -26,7 +27,7 @@ export default {
         value: "name",
         showIcon: true,
         showCheckBox: true,
-        needAnimation: true,
+        needAnimation: false,
         needChangeIcon: false,
         isAsync: false,
         needLink:false,
@@ -67,8 +68,6 @@ export default {
   methods: {
     selected(event) {
       console.log("selected", event);
-      console.log(this.$refs.tree);
-      this.$refs.tree.deleteNodes(event);
       
     },
     expand(event) {
@@ -83,7 +82,14 @@ export default {
         this.$refs.tree.deleteNodes(checks);
     },
     addNode(){
-
+        let tree = this.$refs.tree;
+        let selected = tree.getSelectedNode();
+        if(selected){
+            tree.addNodes(selected,{
+                id: num++,
+                name: "异步加载节点1",
+            })
+        }
     }
   }
 };

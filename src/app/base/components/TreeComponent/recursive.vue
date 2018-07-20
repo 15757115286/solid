@@ -64,13 +64,16 @@ export default {
         this.$set(elem, "status", 'beforeLoad');
         this.$set(elem, this.option.children, []);
       }
-      if (!elem[this.option.parent]) {
+      if (elem[this.option.parent] === undefined) {
         this.$set(elem, this.option.parent, this.copyOfParent);
       }
-      if (!elem[this.option.checked]) {
+      if(elem[this.option.children] && elem[this.option.expand] === undefined){
+          this.$set(elem,this.option.expand,false);
+      }
+      if (elem[this.option.checked] === undefined) {
         this.$set(elem, this.option.checked, false);
       }
-      if (this.option.showIcon && !elem.imgPath) {
+      if (this.option.showIcon && elem.imgPath === undefined) {
         this.$set(elem, "imgPath", this.findPath(elem));
       }
     });
