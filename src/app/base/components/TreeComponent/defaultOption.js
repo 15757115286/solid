@@ -6,9 +6,10 @@ const defaultOption = {
     value:'name',//值别名
     showIcon:false,//是否有图标
     showCheckBox:false,//是否显示勾选框
-    expand:'expand',//是否展开别名
+    expand:'expand',//是否展开别名 如果是异步加载，expand事件会在expand加载成功后触发
     selected:'selected',//是否选中别名
     checked:'checked',//是否选中当前节点（如果节点没有该属性会自动添加）
+    needLink:true,//勾选时候是否需要联动父节点
     children:'children',//子元素别名
     needChangeIcon:true,//我们可以调用changeImgPath函数来改变icon。当这个不存在的时候是否默认toggle图标。
     defaultFileIcon:defaultFileIcon,//默认的文件图标
@@ -22,7 +23,7 @@ const defaultOption = {
     changeImgPath:null,//用来改变imgpath的函数，返回路径 提供当前节点
     needAnimation:false,//是否需要动画,
     isAsync:false,//是否是异步加载树节点
-    loadData:null//异步获取数据的方法
+    loadData:null,//异步获取数据的方法，
 }
 Object.freeze(defaultOption);
 export default defaultOption;

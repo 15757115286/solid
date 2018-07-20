@@ -5,19 +5,22 @@
         <tree-component ref="tree" :data="data" :option="option" 
             @selected="selected($event)" @expand="expand($event)" 
             @check="check($event)"
-            style="width:200px;height:500px;"></tree-component>
+            style="width:400px;height:500px;"></tree-component>
+        <div>
+            <button @click="deleteChecks()">删除勾选节点</button>
+        </div>
     </div>
 </template>
 <script>
 import TreeComponent from "app/base/components/TreeComponent";
-import data from "./data";
+import getData from "./data";
 import refersh from "@/assets/img/refresh.png";
 let num = 100;
 export default {
   name: "treeTestComponent",
   data() {
     return {
-      data: data,
+      data: getData(),
       option: {
         key: "id",
         value: "name",
@@ -25,7 +28,8 @@ export default {
         showCheckBox: true,
         needAnimation: true,
         needChangeIcon: false,
-        isAsync: true,
+        isAsync: false,
+        needLink:false,
         transImgPath(child) {
           //if(child.id == 6) return refersh;
         },
@@ -64,6 +68,8 @@ export default {
     selected(event) {
       console.log("selected", event);
       console.log(this.$refs.tree);
+      this.$refs.tree.deleteNodes(event);
+      
     },
     expand(event) {
       console.log("expand", event);
@@ -71,6 +77,13 @@ export default {
     check(event) {
       let checks = this.$refs.tree.getCheckedNodes();
       console.log("check", checks);
+    },
+    deleteChecks(){
+        let checks = this.$refs.tree.getCheckedNodes();
+        this.$refs.tree.deleteNodes(checks);
+    },
+    addNode(){
+
     }
   }
 };

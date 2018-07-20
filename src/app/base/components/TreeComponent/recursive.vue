@@ -20,10 +20,12 @@
                     <span>{{ child[option.value] }}</span>
                 </span>
             </div>
-            <recursive-component :data="child[option.children]" :option="option" :parent="child" v-if="!option.isAsync && hasChildren(child)"
+            <recursive-component :data="child[option.children]" :option="option" :parent="child" 
+                v-if="!option.isAsync && hasChildren(child)" :findPath="findPath"
                 :class="{'tree-hidden':!child[option.expand]}"></recursive-component>
             <!-- 异步树组件 -->
-            <recursive-component :data="child[option.children]" :option="option" :parent="child" v-if="option.isAsync && child.status == 'loaded'"
+            <recursive-component :data="child[option.children]" :option="option" :parent="child" 
+                v-if="option.isAsync && child.status == 'loaded'" :findPath="findPath"
                 :class="{'tree-hidden':!child[option.expand]}"></recursive-component>
         </li>
     </ul>
@@ -44,13 +46,16 @@ export default {
     parent: {
       type: Object,
       default: null
+    },
+    findPath:{
+        type:Function,
+        required:true
     }
   },
   data() {
     return {
       copyOfData: this.data,
-      copyOfParent: this.parent,
-      checks: []
+      copyOfParent: this.parent
     };
   },
   created() {
@@ -112,8 +117,7 @@ export default {
     },
     check(child, checkChildren, checkParent) {
       this.$nextTick(() => {
-        this.checks = [];
-        this.recursiveCheck(child, checkChildren, checkParent);
+        this.option.needLink && this.recursiveCheck(child, checkChildren, checkParent);
         bus.$emit("check", child);
       });
     },
@@ -141,31 +145,6 @@ export default {
     },
     selected(child) {
       bus.$emit("selected", child);
-    },
-    findPath(child) {
-      //imgPath为最终路径，如果有就直接返回
-      if (child[this.option.imgPath]) {
-        return child[this.option.imgPath];
-      }
-      let transImgPath = this.option.transImgPath;
-      let path =
-        (typeof transImgPath == "function" && transImgPath(child)) || null;
-      if (path) return path;
-      //看是否有icon
-      let hasChildren = child[this.option.children];
-      if (hasChildren) {
-        if (child[this.option.expand]) {
-          return (
-            child[this.option.dirOpenIcon] || this.option.defaultDirOpenIcon
-          );
-        } else {
-          return (
-            child[this.option.dirCloseIcon] || this.option.defaultDirCloseIcon
-          );
-        }
-      } else {
-        return child[this.option.fileIcon] || this.option.defaultFileIcon;
-      }
     }
   }
 };
