@@ -1,3 +1,6 @@
+.tree-root{
+    overflow: auto;
+}
 .tree-children{
     position: relative;
     padding-left: 23px;
@@ -6,6 +9,7 @@
     font-size: 14px;
     cursor: pointer;
     user-select: none;
+    white-space: nowrap;
 }
 .tree-title{
     display: flex;
@@ -25,6 +29,7 @@
     left: 13px;
     font-size: 16px;
 }
+
 .tree-children li{
     margin: 6px 0px 3px 0px;
 }
@@ -44,4 +49,17 @@
 .tree-checkbox{
     line-height: 0;
     margin: 0 3px;
+}
+.tree-loading{
+    font-size: 13px;
+    left: -5px;
+    position: absolute;
+    top: -7px;
+    animation: circle 1s linear infinite;
+}
+
+@keyframes circle
+{
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
 }

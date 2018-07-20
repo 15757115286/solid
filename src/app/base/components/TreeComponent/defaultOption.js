@@ -20,7 +20,9 @@ const defaultOption = {
     transImgPath:null,//用来转化imgpath的函数，返回路径 提供当前节点
     parent:'parent',//父元素别名（如果没有，会自动添加）
     changeImgPath:null,//用来改变imgpath的函数，返回路径 提供当前节点
-    needAnimation:false,//是否需要动画
+    needAnimation:false,//是否需要动画,
+    isAsync:false,//是否是异步加载树节点
+    loadData:null//异步获取数据的方法
 }
 Object.freeze(defaultOption);
 export default defaultOption;

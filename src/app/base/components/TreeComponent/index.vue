@@ -64,12 +64,13 @@ export default {
             child[this.mergeOption.selected] = true;
             this.$emit('selected',child);
         }.bind(this);
-        this.expand = function(child,event){
+        this.expand = function(child,event,isAsync = false){
             if(this.mergeOption.needAnimation){
                 let target = event.target;
                 let targetName = target.tagName.toLowerCase();
                 let ul = targetName == 'i' ? target.parentElement.parentElement.nextElementSibling : 
                     target.parentElement.nextElementSibling;
+                ul && isAsync && (ul.style.display = 'none');//为了让第一次都动画的hack
                 let animation = ul ? this.$A(ul) : null;
                 if(child.expand){
                     animation && animation.show(150);
