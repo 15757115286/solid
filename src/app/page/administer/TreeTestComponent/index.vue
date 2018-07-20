@@ -27,7 +27,7 @@ export default {
         value: "name",
         showIcon: true,
         showCheckBox: true,
-        needAnimation: true,
+        needAnimation: false,
         needChangeIcon: false,
         isAsync: false,
         needLink:false,
