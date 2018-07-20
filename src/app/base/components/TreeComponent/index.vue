@@ -25,41 +25,72 @@ export default {
             mergeOption:{},
             selected:null,
             expand:null,
-            selected:null
+            selected:null,
+            check:null
         }
     },
     components:{
         RecursiveComponent
     },
+    methods:{
+       getSelectedNode(){
+           return this.selected;
+       },
+       getCheckedNodes(){
+           let checks = [];
+           this.data.forEach(elem=>{
+               this.recursiveGet(elem,checks);
+           })
+           return checks;
+       },
+       recursiveGet(elem,checks){
+           if(elem[this.mergeOption.checked]){
+               checks.push(elem);
+           }
+           let children = elem[this.mergeOption.children];
+           if(children){
+               children.forEach(child=>{
+                   this.recursiveGet(child,checks);
+               })
+           }
+       }
+    },
     created(){
         this.selected = function(child){
             if(this.selected){
-                this.selected.selected = false;
+                this.selected[this.mergeOption.selected] = false;
             }
             this.selected = child;
-            child.selected = true;
+            child[this.mergeOption.selected] = true;
             this.$emit('selected',child);
         }.bind(this);
         this.expand = function(child,event){
-            let target = event.target;
-            let targetName = target.tagName.toLowerCase();
-            let ul = targetName == 'i' ? target.parentElement.parentElement.nextElementSibling : 
-                target.parentElement.nextElementSibling;
-            let animation = ul ? this.$A(ul) : null;
-            if(child.expand){
-                animation && animation.show(150);
-            }else{
-                animation && animation.hidden(150);
+            if(this.mergeOption.needAnimation){
+                let target = event.target;
+                let targetName = target.tagName.toLowerCase();
+                let ul = targetName == 'i' ? target.parentElement.parentElement.nextElementSibling : 
+                    target.parentElement.nextElementSibling;
+                let animation = ul ? this.$A(ul) : null;
+                if(child.expand){
+                    animation && animation.show(150);
+                }else{
+                    animation && animation.hidden(150);
+                }
             }
             this.$emit('expand',child);
+        }.bind(this);
+        this.check = function(child){
+            this.$emit('check',child);
         }.bind(this);
         Object.assign(this.mergeOption,defaultOption,this.option);
         bus.$on('selected',this.selected);
         bus.$on('expand',this.expand);
+        bus.$on('check',this.check);
     },
     destroyed(){
         bus.$off('selected',this.selected);
         bus.$off('expand',this.expand);
+         bus.$off('check',this.check);
     }
 }
 </script>

@@ -23,6 +23,7 @@
 .tree-direction{
     position: absolute;
     left: 13px;
+    font-size: 16px;
 }
 .tree-children li{
     margin: 6px 0px 3px 0px;
@@ -39,4 +40,8 @@
 .tree-label{
     display: flex;
     align-items: center;
+}
+.tree-checkbox{
+    line-height: 0;
+    margin: 0 3px;
 }

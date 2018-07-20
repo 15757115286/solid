@@ -11,7 +11,6 @@ export default [
                 name:'第二层级-1',
                 expand:false,
                 selected:false,
-                imgPath:order,
                 children:[
                     {
                         id:6,
@@ -27,7 +26,8 @@ export default [
                 name:'第二层级-2',
                 expand:false,
                 selected:false,
-                children:null
+                children:null,
+                checked:true
             }
         ]
     },

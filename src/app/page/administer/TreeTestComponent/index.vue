@@ -2,7 +2,10 @@
     <div>
         <h4>test</h4>
         <!-- <img src="~@/assets/img/person.png"> -->
-        <tree-component :data="data" :option="option" @selected="selected($event)" @expand="expand($event)" style="width:200px;height:500px;"></tree-component>
+        <tree-component ref="tree" :data="data" :option="option" 
+            @selected="selected($event)" @expand="expand($event)" 
+            @check="check($event)"
+            style="width:200px;height:500px;"></tree-component>
     </div>
 </template>
 <script>
@@ -18,18 +21,17 @@ export default {
                 key:'id',
                 value:'name',
                 showIcon:true,
-                transImgPath(child,mergeOption){
-                    if(child.id == 6) return refersh;
+                showCheckBox:true,
+                needAnimation:false,
+                needChangeIcon:false,
+                transImgPath(child){
+                    //if(child.id == 6) return refersh;
                 },
-                changeImgPath(child,mergeOption){
-                    if(child.expand == false){
-                        import('../../../base/components/TreeComponent/icon/dir.png').then(res=>{
-                            child[mergeOption.imgPath] =  res.default;
-                        });
+                changeImgPath(child){
+                    if(child.expand == true){
+                        return require('../../../base/components/TreeComponent/icon/dir_open.png');
                     }else{
-                        child[mergeOption.imgPath] = import('../../../base/components/TreeComponent/icon/dir_close.png').then(res=>{
-                            child[mergeOption.imgPath] =  res.default;
-                        });
+                        return require('../../../base/components/TreeComponent/icon/dir_close.png');
                     }
                 }
             }
@@ -41,9 +43,14 @@ export default {
     methods:{
         selected(event){
             console.log('selected',event);
+            console.log(this.$refs.tree);
         },
         expand(event){
             console.log('expand',event);
+        },
+        check(event){
+            let checks = this.$refs.tree.getCheckedNodes();
+            console.log('check',checks);
         }
     }
 }
