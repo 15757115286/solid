@@ -53,10 +53,48 @@ export default {
       });
     },
     addNodes(parent, nodes) {
-        if(!parent) return;
-        if(this.mergeOption.isArray){
+        if(!parent || !nodes) return false;
+        //异步节点为加载前不能新增节点
+        if(this.mergeOption.isAsync && parent.status != 'loaded') return false;
+        nodes = Array.isArray(nodes) ? nodes : [nodes];
+        if(parent[this.mergeOption.children] == undefined){
+            this.$set(parent,this.mergeOption.children,[]);
+            if(parent[this.mergeOption.expand] === undefined){
+                this.$set(parent,this.mergeOption.expand,true);
+            }else{
+                parent[this.mergeOption.expand] = true;
+            }
         }
+        nodes.forEach(node=>{
+            this.checkNode(node);
+            this.$set(node,this.mergeOption.parent,parent);
+            node.imgPath === undefined && (node.imgPath = null);
+            parent[this.mergeOption.children].push(node);
+            node.imgPath = this.findPath(node);
+        })
+        if(this.mergeOption.showIcon){
+            let path = this.findPath(parent ,true);
+            if(parent.imgPath === undefined){
+                this.$set(parent,this.mergeOption.imgPath,path);
+            }else{
+                parent.imgPath = path;
+            }
+           
+        }
+        return true;
     },
+    checkNode(node){
+        if(node[this.mergeOption.checked] === undefined){
+            this.$set(node,this.mergeOption.checked,false);
+        }
+        if(node[this.mergeOption.selected] === undefined){
+            this.$set(node,this.mergeOption.selected,false);
+        }else if(node[this.mergeOption.selected] === true){
+            this.selected[this.mergeOption.selected] = false;
+            this.selected = node;
+        }
+    }
+    ,
     recursiveGet(elem, checks) {
       if (elem[this.mergeOption.checked]) {
         checks.push(elem);
@@ -68,10 +106,10 @@ export default {
         });
       }
     },
-    findPath(child) {
+    findPath(child ,skip = false) {
       //imgPath为最终路径，如果有就直接返回
-      if (child[this.mergeOption.imgPath]) {
-        return child[this.mergeOption.imgPath];
+      if (child.imgPath && !skip) {
+        return child.imgPath;
       }
       let transImgPath = this.mergeOption.transImgPath;
       let path =
