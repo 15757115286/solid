@@ -112,6 +112,7 @@ export default {
               }
               child[this.option.expand] = !child[this.option.expand];
               child.status = "loaded";
+              child.imgPath = this.findPath(child,true);
               this.$nextTick(() => {
                 bus.$emit("expand", child, event, true);
               });
