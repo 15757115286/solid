@@ -29,16 +29,22 @@ export default {
         showCheckBox: true,
         needAnimation: false,
         needChangeIcon: false,
-        isAsync: false,
+        isAsync: true,
         needLink:false,
         transImgPath(child) {
-          //if(child.id == 6) return refersh;
+          if(child.level == 3) return refersh;
         },
         changeImgPath(child) {
           if (child.expand == true) {
             return require("../../../base/components/TreeComponent/icon/dir_open.png");
           } else {
             return require("../../../base/components/TreeComponent/icon/dir_close.png");
+          }
+        },
+        beforeRender(elem){
+          if(elem.level == 3){
+            elem.noData = true;
+            console.log(this.option);
           }
         },
         loadData(child, callback) {
