@@ -17,7 +17,7 @@
                     <input type="checkbox" v-model="child[option.checked]" @click="check(child,true,true)">
                 </span>
                 <span class="tree-font tree-title" @click="selected(child)" :class="{'tree-selected':child[option.selected]}">
-                    <img :src="child.imgPath" width="14px" v-if="option.showIcon">
+                    <img :src="child.imgPath" class="tree-icon" v-if="option.showIcon">
                     <span>{{ child[option.value] }}</span>
                 </span>
             </div>

@@ -25,7 +25,7 @@ const defaultOption = {
     isAsync:false,//是否是异步加载树节点
     loadData:null,//异步获取数据的方法，
     level:'level',//节点所处的层级，如果提供的数据中已经有该属性则不会自动去添加（谨慎）,
-    beforeRender:null,//在每个节点被渲染前调用，提供节点和当前组件,在寻找图标路径前面执行
+    beforeRender:null,//在每个节点被渲染前调用，提供节点和当前组件,在寻找图标路径前面执行(this绑定的是tree组件或者每个ul的组件)
     noData:'noData'//异步节点中判断是否还有数据（用来展示是否展开图标）
 }
 Object.freeze(defaultOption);
