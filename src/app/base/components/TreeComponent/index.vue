@@ -121,6 +121,9 @@ export default {
         });
       }
     },
+    //1.初始化数据（第一次加载）时候会为每个元素判断路径
+    //2.会在新增节点时候为父元素和每个子元素重新判断路径
+    //3.异步节点加载完毕的时候会为每个元素添加路径
     findPath(child, skip = false) {
       //imgPath为最终路径，如果有就直接返回
       if (child.imgPath && !skip) {
