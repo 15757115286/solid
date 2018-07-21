@@ -1,6 +1,6 @@
 <template>
     <div class="tree-root">
-        <recursive-component :data="data" :option="mergeOption" :findPath="findPath" :level="level"></recursive-component>
+        <recursive-component :data="data" :option="mergeOption"  :level="level"></recursive-component>
     </div>
 </template>
 <script>
@@ -159,6 +159,11 @@ export default {
           }
         }
       }
+    }
+  },
+  provide(){
+    return {
+      findPath:this.findPath
     }
   },
   created() {

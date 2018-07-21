@@ -22,11 +22,11 @@
                 </span>
             </div>
             <recursive-component :data="child[option.children]" :option="option" :parent="child" 
-                v-if="!option.isAsync && hasChildren(child)" :findPath="findPath" :level="level + 1"
+                v-if="!option.isAsync && hasChildren(child)" :level="level + 1"
                 :class="{'tree-hidden':!child[option.expand]}"></recursive-component>
             <!-- 异步树组件 -->
             <recursive-component :data="child[option.children]" :option="option" :parent="child" 
-                v-if="option.isAsync && child.status == 'loaded'" :findPath="findPath" :level="level + 1"
+                v-if="option.isAsync && child.status == 'loaded'" :level="level + 1"
                 :class="{'tree-hidden':!child[option.expand]}"></recursive-component>
         </li>
       </transition-group>
@@ -48,10 +48,6 @@ export default {
     parent: {
       type: Object,
       default: null
-    },
-    findPath: {
-      type: Function,
-      required: true
     },
     level: {
       type: Number,
@@ -93,6 +89,7 @@ export default {
       }
     });
   },
+  inject:['findPath'],
   methods: {
     hasChildren(child) {
       return (

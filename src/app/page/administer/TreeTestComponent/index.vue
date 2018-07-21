@@ -1,7 +1,6 @@
 <template>
     <div>
         <h4>test</h4>
-        <!-- <img src="~@/assets/img/person.png"> -->
         <tree-component ref="tree" :data="data" :option="option" 
             @selected="selected($event)" @expand="expand($event)" 
             @check="check($event)"

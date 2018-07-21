@@ -7,6 +7,13 @@
 如果是以 app/ 开头的路径，那么代表的是从src/app下面查找
 如果是以 @/ 开头的路径，那么代表是从src下面查找
 
+##public文件夹
+
+
+根据官网文档说明，这个文件夹是放置静态资源用的，这些和使用相对路径引用的资源的区别是放置在public文件夹下面的文件不会被webpack处理。
+但是官方建议还是把assets放置在模块依赖比较好，这样的话发现错误会在编译的时候被发现而不会给用户404。
+详见：https://cli.vuejs.org/guide/html-and-static-assets.html#the-public-folder
+
 # vue.config.js
 
 这个是配置文件，配置一些vue-cli-serve的一些内容
