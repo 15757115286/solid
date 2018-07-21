@@ -17,9 +17,10 @@
     padding: 2px 4px;
     border-radius: 3px;
     transition: all 0.2s;
-   img{
-        margin-right: 4px;
-   }
+}
+.tree-icon{
+    width:16px;
+    margin-right: 4px;
 }
 .tree-title:not(.tree-selected):hover{
     background-color: #eaf4fe;
@@ -59,9 +60,6 @@
     position: absolute;
     top: -7px;
     animation: circle 1s linear infinite;
-}
-.tree-icon{
-    width:16px;
 }
 
 @keyframes circle
