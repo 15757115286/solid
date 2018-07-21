@@ -55,7 +55,7 @@ export default {
   bottom:0;
   right:0;
   overflow:auto;
-  background:  url(./img/login_bg.png)  no-repeat fixed ;
+  background:  url(./img/login_bg.jpg)  no-repeat fixed ;
   background-size: 100% 100%;
 }
 .login-wrapper{
