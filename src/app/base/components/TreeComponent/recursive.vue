@@ -100,24 +100,26 @@ export default {
       );
     },
     toggle(child, event) {
-      if (this.option.isAsync && child.status == "beforeLoad") {
-        child.status = "loading";
-        let loadData = this.option.loadData;
-        if (typeof loadData == "function") {
-          loadData(
-            child,
-            function(res) {
-              if (Array.isArray(res)) {
-                child[this.option.children].push(...res);
-              }
-              child[this.option.expand] = !child[this.option.expand];
-              child.status = "loaded";
-              child.imgPath = this.findPath(child,true);
-              this.$nextTick(() => {
-                bus.$emit("expand", child, event, true);
-              });
-            }.bind(this)
-          );
+      if (this.option.isAsync) {
+        if (child.status == "beforeLoad") {
+          child.status = "loading";
+          let loadData = this.option.loadData;
+          if (typeof loadData == "function") {
+            loadData(
+              child,
+              function(res) {
+                if (Array.isArray(res)) {
+                  child[this.option.children].push(...res);
+                }
+                child[this.option.expand] = !child[this.option.expand];
+                child.status = "loaded";
+                child.imgPath = this.findPath(child, true);
+                this.$nextTick(() => {
+                  bus.$emit("expand", child, event, true);
+                });
+              }.bind(this)
+            );
+          }
         }
       } else {
         child[this.option.expand] = !child[this.option.expand];
