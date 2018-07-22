@@ -5,10 +5,10 @@
             <a>Admin</a>
         </div>
         <div class="right-head">
-             <div class="head-item user-info" @mouseenter="mouseenter()" @mouseleave="mouseleave()">
+             <div class="head-item user-info" @click="infoClick()">
             <img :src="personImg" alt="user logo" class="user-img">
             <span class="user-text">你好，曹敏</span>
-            <i class="fa fa-caret-down arrow-down" aria-hidden="true"></i>
+            <i class="fa fa-caret-down arrow-down" :class="showMenu && 'arrow-down-transfrom'" aria-hidden="true"></i>
             <ul class="menu-down" ref="menuDown" @click="click()">
                 <li><i class="fa fa-user-o" aria-hidden="true"></i><span>用户信息</span></li>
                 <li><i class="fa fa-cog" aria-hidden="true"></i><span>设置</span></li>
@@ -34,18 +34,22 @@ export default {
         return {
             headImg,
             personImg,
-            show:false
+            showMenu:false
         }
     },
     methods:{
         changeLocal(language){
             this.$store.commit('changeLan',language);
         },
-        mouseenter(){
+        show(){
             this.$A(this.$refs.menuDown).show(100);
         },
-        mouseleave(){
+        hidden(){
             this.$A(this.$refs.menuDown).hidden(100);
+        },
+        infoClick(){
+            this.showMenu ? this.hidden() : this.show();
+            this.showMenu = !this.showMenu;
         },
         click(){
             this.$A(this.$refs.menuDown).hidden(100);
@@ -118,7 +122,7 @@ export default {
         transition:transform 0.3s;
         margin-left: 10px;
     }
-    .user-info:hover .arrow-down{
+    .arrow-down-transfrom{
         transform: rotate(180deg);
     }
     .user-text{
