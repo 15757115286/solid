@@ -44,7 +44,7 @@ export default {
     submit() {
       if(this.username == 'admin'  && this.password == '1111'){
         this.$store.commit('isLogin');
-        this.$router.push('/page/admin/first');
+        this.$router.push('/page/admin/map');
         return;
       }
       this.$store.dispatch("login", {
@@ -53,7 +53,7 @@ export default {
       }).then(res => {
         if(isSuccess(res)){
           localStorage.setItem('token',res.data.HTTP_ACCESS_TOKEN);
-          this.$router.push('/page/admin/first');
+          this.$router.push('/page/admin/map');
         }
       });
     }

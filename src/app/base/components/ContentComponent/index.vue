@@ -1,14 +1,16 @@
 <template>
-    <div class="content">
+    <div class="content" :class="$store.state.showTree && 'showTree'">
         <div class="path" :origin-path="$store.state.currentPath.toPath">
             当前路径：{{ $store.state.currentPath.toPath | translateMenu }} 
         </div>
-        <router-view :style="{marginTop:'30px'}"></router-view>
+        <router-view class="path-content"></router-view>
     </div>
 </template>
 <script>
 export default {
-    name:'contentComponent'
+    name:'contentComponent',
+    created(){
+    }
 }
 </script>
 <style scoped>
@@ -17,6 +19,7 @@ export default {
         margin-top: 50px;
         margin-left: 200px;
         overflow: auto;
+        transition: all 0.3s;
     }
     .path{
         position: fixed;
@@ -29,6 +32,12 @@ export default {
         right: 0;
         overflow: hidden;
         padding-left: 10px;
+    }
+    .path-content{
+        margin-top: 30px;
+    }
+    .showTree{
+        padding-right: 200px;
     }
 </style>
 

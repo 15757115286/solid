@@ -3,18 +3,21 @@
         <head-component></head-component>
         <left-bar-component></left-bar-component>
         <content-component></content-component>
+        <right-bar-component></right-bar-component>
     </div>
 </template>
 <script>
 import ContentComponent from 'app/base/components/ContentComponent'
 import HeadComponent from 'app/base/components/HeadComponent'
 import LeftBarComponent from 'app/base/components/LeftBarComponent'
+import RightBarComponent from 'app/base/components/RightBarComponent'
 export default {
     name:'pageComponent',
     components:{
         ContentComponent,
         HeadComponent,
-        LeftBarComponent
+        LeftBarComponent,
+        RightBarComponent
     }
 }
 </script>

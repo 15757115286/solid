@@ -1,10 +1,11 @@
 <template>
     <div class="head">
-        <div class="right-head">
+        <div class="left-head">
             <img height="24px" :src="headImg"  alt="head logo">
             <a>Admin</a>
         </div>
-        <div class="user-info" @mouseenter="mouseenter()" @mouseleave="mouseleave()">
+        <div class="right-head">
+             <div class="head-item user-info" @mouseenter="mouseenter()" @mouseleave="mouseleave()">
             <img :src="personImg" alt="user logo" class="user-img">
             <span class="user-text">你好，曹敏</span>
             <i class="fa fa-caret-down arrow-down" aria-hidden="true"></i>
@@ -14,7 +15,12 @@
                 <hr>
                 <li @click="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i><span>退出登录</span></li>
             </ul>
-        </div>       
+        </div>    
+        <a class="head-item tree-button" @click.prevent="toggleTree()">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+        </a>  
+        </div>
+        
         <!-- <button @click="changeLocal('zh')">路径（中文）</button>
         <button @click="changeLocal('en')">路径（英文）</button> -->
     </div>
@@ -50,6 +56,9 @@ export default {
                     this.$router.push('/login');
                 }
             })
+        },
+        toggleTree(){
+            this.$store.commit('toggleTree');
         }
     }
 }
@@ -65,7 +74,7 @@ export default {
         display: flex;
         justify-content: space-between;
     }
-    .right-head{
+    .left-head{
         display: flex;
         align-items:center;
         justify-content: flex-start;
@@ -73,20 +82,29 @@ export default {
         margin-left: 24px;
     }
     
-    .right-head a{
+    .left-head a{
         font-size: 24px;
         color: #fff;
     }
-    .right-head a:hover{
+    .left-head a:hover{
         color: #009688;
+    }
+    .right-head{
+        display: flex;
+        justify-content: flex-end;
+    }
+    .head-item{
+        height: 100%;
+        padding:0 20px;
+        float: right;
+    }
+    .head-item:hover{
+        cursor: pointer;
     }
     .user-info{
         position: relative;
-        height: 100%;
-        float: right;
         display: flex;
         align-items: center;
-        padding:0 20px;
     }
 
     .user-img{
@@ -99,9 +117,6 @@ export default {
     .arrow-down{
         transition:transform 0.3s;
         margin-left: 10px;
-    }
-    .user-info:hover{
-        cursor: pointer;
     }
     .user-info:hover .arrow-down{
         transform: rotate(180deg);
@@ -116,7 +131,7 @@ export default {
         color: #333;
         border-radius: 5px;
         padding: 5px 0;
-          display: none;
+        display: none;
     }
     .menu-down li{
         padding :8px 20px 8px 15px;
@@ -130,6 +145,10 @@ export default {
     }
     .menu-down hr{
         margin: 5px 0;
+    }
+    .tree-button{
+        display: flex;
+        align-items: center;
     }
 </style>
 

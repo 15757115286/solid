@@ -19,7 +19,7 @@
     transition: all 0.2s;
 }
 .tree-icon{
-    width:16px;
+    //width:16px;//在IE11中给图片设置宽度在空间不足的情况下会有bug
     margin-right: 4px;
 }
 .tree-title:not(.tree-selected):hover{

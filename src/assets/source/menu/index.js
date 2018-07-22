@@ -2,8 +2,8 @@
 export default function getMenuSource(){
     return [
         {
-            name:'首页',
-            path:'/page/admin/first',
+            name:'地图',
+            path:'/page/admin/map',
             hasChildren:false,
             icon:'fa-bar-chart'
         },
@@ -20,11 +20,6 @@ export default function getMenuSource(){
                 {
                     name:'http测试组件',
                     path:'/page/admin/http',
-                    hasChildren:false
-                },
-                {
-                    name:'组件3',
-                    path:'/page/admin/component3',
                     hasChildren:false
                 }
             ],
@@ -53,11 +48,7 @@ export default function getMenuSource(){
                         {
                             name:'路由3-1',
                             path:'/page/admin/component1'
-                        }, 
-                        {
-                            name:'路由3-2',
-                            path:'/page/admin/component2'
-                        },
+                        }
                     ]
                 }
             ],

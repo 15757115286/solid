@@ -10,7 +10,8 @@ export default new Vuex.Store({
       count: 0,
       isLogin: false,
       currentPath:{},
-      local:'zh'
+      local:'zh',
+      showTree:true
     },
     /**
      * mutations中的函数只能是同步函数，在组件中通过this.$store.commit(type:string,option:object)触发
@@ -28,6 +29,9 @@ export default new Vuex.Store({
       },
       [api.IS_LOGIN](state){
         state.isLogin = true;
+      },
+      [api.TOGGLE_TREE](state){
+        state.showTree = !state.showTree;
       }
     },
     /**

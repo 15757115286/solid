@@ -10,14 +10,18 @@ $head_bar_user_info_hover_bg_color:black;//头部用户信息悬浮背景色
 $head_menu_down_border_color:#d2d2d2;//头部菜单用户信息下拉菜单边框颜色
 $head_menu_down_bg_color:white;//头部菜单用户信息下拉菜背景颜色
 $head_menu_down_hover_bg_color:#f2f2f2;//头部下拉菜单悬浮背景色
+$head_menu_a_color:white;
 body.black{
     .head{
         background-color: $head_bar_bg_color;
         .user-text,.user-info{
             color:$head_bar_user_text_color;
         }
-        .user-info:hover{
+        .head-item:hover{
             background-color: $head_bar_user_info_hover_bg_color;
+        }
+        a,a:hover{
+            color: $head_menu_a_color;
         }
         .menu-down{
             border: 1px solid $head_menu_down_border_color;

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h4>test</h4>
         <tree-component ref="tree" :data="data" :option="option" 
             @selected="selected($event)" @expand="expand($event)" 
             @check="check($event)"
@@ -31,7 +30,7 @@ export default {
         isAsync: true,
         needLink:false,
         transImgPath(child) {
-          if(child.level == 3) return refersh;
+          //if(child.level == 3) return refersh;
         },
         changeImgPath(child) {
           if (child.expand == true) {
@@ -41,10 +40,10 @@ export default {
           }
         },
         beforeRender(elem){
-          if(elem.level == 3){
+          /* if(elem.level == 3){
             elem.noData = true;
             console.log(this.option);
-          }
+          } */
         },
         loadData(child, callback) {
           setTimeout(() => {
