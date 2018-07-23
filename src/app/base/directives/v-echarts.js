@@ -26,9 +26,9 @@ let directive =  {
         el.echartsInstance.dispose();
 
         if ( window.attachEvent ) {
-            window.detachEvent('onresize', _this.resizeEventHandler);
+            window.detachEvent('onresize', el.resizeEventHandler);
         } else {
-            window.removeEventListener('resize', _this.resizeEventHandler, false);;
+            window.removeEventListener('resize', el.resizeEventHandler, false);;
         }
     }
 }
