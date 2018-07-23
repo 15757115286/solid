@@ -1,6 +1,5 @@
 export default {
     menu:{
-        '/page/admin':'百度地图',
         '/page/admin/map':'百度地图',
         '/page/admin/component1':'测试组件1',
         '/page/admin/component2':'测试组件2',
@@ -10,6 +9,7 @@ export default {
         '/page/error/401':'错误页面（401）',
         '/page/error/404':'错误页面（404）',
         '/page/error/500':'错误页面（500）',
-        '/page/error/network':'网络请求错误页面'
+        '/page/error/network':'网络请求错误页面',
+        '/page/admin/global-tree':'全局树功能测试'
     }
 }

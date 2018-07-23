@@ -1,4 +1,3 @@
-import store from '../../store'
 import enviroment from 'app/environment'
 
 const env = process.env.NODE_ENV;
@@ -9,9 +8,6 @@ export function isDev(){
 }
 export function isProd(){
     return env === 'production';
-}
-export function isLogin(){
-    return store.state.isLogin;
 }
 export function getIPConfig(){
     let config = isDev() ? enviroment.dev : 

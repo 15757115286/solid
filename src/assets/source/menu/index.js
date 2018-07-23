@@ -14,6 +14,12 @@ export default function getMenuSource(){
             icon:'fa-bar-chart'
         },
         {
+            name:'全局树事件',
+            path:'/page/admin/global-tree',
+            hasChildren:false,
+            icon:'fa-bar-chart'
+        },
+        {
             name:'父菜单1',
             hasChildren:true,
             children:[
@@ -23,7 +29,7 @@ export default function getMenuSource(){
                     hasChildren:false
                 }
             ],
-            open:true,
+            open:false,
             stopToggle:true
         },
         {
@@ -43,7 +49,7 @@ export default function getMenuSource(){
                 {
                     name:'组件2-3',
                     hasChildren:true,
-                    //open:true,
+                    open:false,
                     children:[
                         {
                             name:'路由3-1',

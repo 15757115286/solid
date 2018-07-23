@@ -1,7 +1,6 @@
 import VueRouter from 'vue-router'
 import store from 'app/store'
 import pageRouter from 'app/page/router'
-import { isLogin } from 'app/utils/common'
 import LoginComponent from 'app/base/components/LoginComponent'
 
 
@@ -21,7 +20,7 @@ const router = new VueRouter({
     if(to.path == '/login'){
         next();   
     }else{//判断用户是否登录
-        if(isLogin()){
+        if(store.state.isLogin){
             next()
         }else{
             next('/login')

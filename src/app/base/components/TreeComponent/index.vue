@@ -38,6 +38,7 @@ export default {
       return this.selected;
     },
     getCheckedNodes() {
+      if(this.mergeOption.showCheckBox == false) return null;
       let checks = [];
       this.data.forEach(elem => {
         this.recursiveGet(elem, checks);
@@ -50,7 +51,8 @@ export default {
         let parent = node[this.mergeOption.parent];
         let children = parent ? parent[this.mergeOption.children] : this.data;
         if (node === this.selected) this.selected = null;
-        children.splice(children.indexOf(node), 1);
+        let pos = children.indexOf(node);
+        pos >=0 && children.splice(pos, 1);
       });
     },
     addNodes(parent, nodes) {

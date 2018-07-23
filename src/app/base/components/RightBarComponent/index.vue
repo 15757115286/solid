@@ -1,19 +1,30 @@
 <template>
     <div class="right-bar" :class="$store.state.showTree && 'show-bar'">
-        <tree-component :data="data" :option="option" class="right-tree"></tree-component>
+        <tree-component :data="data" :option="option" class="right-tree" ref="tree"
+            @selected="selected($event)" @check="check($event)" @expand="expand($event)">
+        </tree-component>
     </div>
 </template>
 <script>
 import TreeComponent from 'app/base/components/TreeComponent'
 import getData from 'app/page/administer/TreeTestComponent/data'
+import globalBus from 'app/utils/bus'
 let num = 1;
 export default {
     name:'rightBarComponent',
     components:{
         TreeComponent
     },
+    mounted(){
+        globalBus.add('gbTree',this.tree = this.$refs.tree);
+    },
+    destroyed(){
+        this.globalBus.del('gbTree');
+    },
     data(){
         return {
+            tree:null,
+            globalBus:globalBus,
             data:getData(),
             option:{
                 showIcon:true,
@@ -39,6 +50,18 @@ export default {
                     }, 300);
                 }
             }
+        }
+    },
+    methods:{
+        selected(selectNode){
+            selectNode
+            this.globalBus.notify('gb.selected',selectNode);
+        },
+        check(checkNode){
+            this.globalBus.notify('gb.check',checkNode);
+        },
+        expand(expandNode){
+            this.globalBus.notify('gb.expand',expandNode);
         }
     }
 }

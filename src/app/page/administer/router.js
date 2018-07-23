@@ -5,6 +5,7 @@ const Component2 = () => import(/* webpackChunkName: 'administer' */'./Component
 const Component3 = () => import(/* webpackChunkName: 'administer' */'./Component3');
 const HttpComponent = () => import(/* webpackChunkName: 'administer' */'./HttpComponent');
 const TreeTestComponent = () => import(/* webpackChunkName: 'administer' */'./TreeTestComponent');
+const GlobalTreeComponent = () => import(/* webpackChunkName: 'administer' */'./GlobalTreeComponent');
 const adminRouter = {
     path: 'admin',
     component:AdministerComponent,
@@ -15,7 +16,8 @@ const adminRouter = {
         { path: 'component3', component: Component3 },
         { path: 'http', component: HttpComponent },
         { path: 'tree', component: TreeTestComponent },
-        { path: '', component: MapComponent }
+        { path: 'global-tree', component: GlobalTreeComponent },
+        { path: '', redirect:'map' }
     ]
 };
 export default adminRouter;

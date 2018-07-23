@@ -44,7 +44,7 @@ export default {
     submit() {
       if(this.username == 'admin'  && this.password == '1111'){
         this.$store.commit('isLogin');
-        this.$router.push('/page/admin/map');
+        this.$router.push('/page/admin');
         return;
       }
       this.$store.dispatch("login", {
