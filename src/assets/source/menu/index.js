@@ -8,6 +8,12 @@ export default function getMenuSource(){
             icon:'fa-bar-chart'
         },
         {
+            name:'Echarts例子',
+            path:'/page/admin/charts',
+            hasChildren:false,
+            icon:'fa-bar-chart'
+        },
+        {
             name:'树插件测试',
             path:'/page/admin/tree',
             hasChildren:false,
@@ -29,7 +35,7 @@ export default function getMenuSource(){
                     hasChildren:false
                 }
             ],
-            open:false,
+            open:true,
             stopToggle:true
         },
         {

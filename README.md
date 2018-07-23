@@ -60,3 +60,10 @@ this代指的是vue实例。
 props是需要过渡的最终的css属性,duration为时间，option有3个参数 callback、tween、duration。分别代表的是动画结束后
 的回调，过渡函数（如'linear','back.easeIn','base.easeInOut'等）、延时时间（延时时间动画一创建就开始计算，不会受到stop等影响）
 特别封装了toggle,show,hidden函数，使用方法是this.$A(elem).toggle(duration?)。
+
+##关于echarts
+
+由于这里在首次加载的时候会import echarts，所以会导致整个app.js会比之前大2M左右，在本地测试时候所花费的时间会比
+没有引入echarts大概多300-400ms的时间。
+所以这里在main.js中引用的话，可能不是太合适。我们使用懒加载的模块，第一个LoginComponent是直接加载的，而pageComponent是
+用懒加载进行的，所以这个项目中在pageComponent中加载比较好。

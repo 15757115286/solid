@@ -7,10 +7,12 @@
     </div>
 </template>
 <script>
+import useEcharts from 'app/base/directives/v-echarts'
 import ContentComponent from 'app/base/components/ContentComponent'
 import HeadComponent from 'app/base/components/HeadComponent'
 import LeftBarComponent from 'app/base/components/LeftBarComponent'
 import RightBarComponent from 'app/base/components/RightBarComponent'
+useEcharts();
 export default {
     name:'pageComponent',
     components:{
