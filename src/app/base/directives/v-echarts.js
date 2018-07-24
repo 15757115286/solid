@@ -32,7 +32,11 @@ let directive =  {
         }
     }
 }
+let isUsed = false;
 
 export default function(){
-    Vue.directive('echarts',directive);
+    if(!isUsed){
+        Vue.directive('echarts',directive);
+        isUsed = true;
+    }
 }

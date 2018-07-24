@@ -34,5 +34,9 @@ module.exports = {
         config.devtool = devtool;
         //关闭eslint验证
         closeEslint(config);
+    },
+    chainWebpack: config => {
+        //关闭资源预加载
+        config.plugins.delete('prefetch')
     }
 }
