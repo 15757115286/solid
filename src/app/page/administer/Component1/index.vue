@@ -21,11 +21,16 @@
             <input type="text" v-model="name">
             <p>{{ name }}</p>
         </Modal>
+        <test-component myname="cm + xwt"></test-component>
     </div>
 </template>
 <script>
+import TestComponent from './testComponent'
 export default {
     name:'component1',
+    components:{
+        TestComponent
+    },
     data(){
         return {
             show:true,
