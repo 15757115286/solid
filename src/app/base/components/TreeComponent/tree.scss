@@ -17,9 +17,10 @@
     padding: 2px 4px;
     border-radius: 3px;
     transition: all 0.2s;
+    flex:0 0 auto;
 }
 .tree-icon{
-    //width:16px;//在IE11中给图片设置宽度在空间不足的情况下会有bug
+    width:16px;
     margin-right: 4px;
 }
 .tree-title:not(.tree-selected):hover{
