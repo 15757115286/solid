@@ -30,7 +30,6 @@ export default {
   provide(){
     return {
       toggle:this.toggle,
-      getMenuHeight:this.getMenuHeight,
       transNumToEn:this.transNumToEn,
       defaultIcon
     }
@@ -42,11 +41,6 @@ export default {
       menu && (menu.open = !menu.open);
       let ul = this.getMenuUl(elem);
       this.$A(ul).toggle(200);
-    },
-     getMenuHeight(menu){
-      if(!menu.open) return '0px';
-      let count = this.recursive(menu);
-      return this.height * count + 'px'; 
     },
     recursive(child){
       let count = child.children.length;
@@ -61,7 +55,7 @@ export default {
       if(node.tagName.toLowerCase() == 'li'){
         return node.lastElementChild;
       }else{
-        return this.getMenuUl(node.parentElement)
+        return this.getMenuUl(node.parentElement);
       }
     },
     transNumToEn(level){

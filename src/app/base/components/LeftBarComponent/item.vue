@@ -38,7 +38,7 @@ export default {
     created(){
         this.classNum = this.transNumToEn(this.level);
     },
-    inject:['toggle','getMenuHeight','transNumToEn','defaultIcon']
+    inject:['toggle','transNumToEn','defaultIcon']
 }
 </script>
 <style scoped>
