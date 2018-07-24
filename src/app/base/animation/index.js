@@ -271,6 +271,13 @@ cssAnimation.prototype.getSize = cssAnimation.getSize = function (el) {
     }
 }
 
+//toggle hidden show 是否改变宽度
+let changeWidth = false;
+
+Animation.setChangeWidth = function(isChange){
+    changeWidth = isChange;
+}
+
 function show(elem, duration,showCallback,force) {
     let style = getComputedStyle(elem);
     if(style.display != 'none' && !force) return void doNext(elem);
@@ -282,13 +289,14 @@ function show(elem, duration,showCallback,force) {
     let showCss = {
         display: display,
         height: size.height,
-        width: size.width,
         opacity: 1,
         overflow: 'hidden'
     }
+    changeWidth && (showCss.width = size.width);
     oldStyle = utils.getStyles(elem, showCss);
     elem.style.opacity = 0;
-    elem.style.height = elem.style.width = '0px';
+    elem.style.height = '0px';
+    changeWidth && (elem.style.width = '0px')
     that.animation(showCss, duration, {
         callback: () => {
             utils.setStyles(elem, oldStyle);
@@ -311,9 +319,9 @@ function hidden(elem ,duration,hiddenCallback,force) {
     let hiddenCss = {
         overflow: 'hidden',
         height: '0px',
-        width: '0px',
         opacity: '0'
     }
+    changeWidth && (hiddenCss.width = '0px');
     direction.forEach(dir=>{
         hiddenCss['padding-' + dir] = '0px';
         hiddenCss['margin-' + dir] = '0px';
@@ -384,6 +392,8 @@ cssAnimation.hidden = function(elem ,duration,callback ,force = false){
 cssAnimation.prototype.start = cssAnimation.start = Animation.start;
 
 cssAnimation.prototype.stop = cssAnimation.stop = Animation.stop;
+
+cssAnimation.prototype.setChangeWidth = cssAnimation.setChangeWidth = Animation.setChangeWidth;
 
 cssAnimation.prototype.Animation = cssAnimation.Animation = Animation;
 

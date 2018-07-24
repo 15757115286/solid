@@ -60,6 +60,17 @@ export default function getMenuSource(){
                         {
                             name:'路由3-1',
                             path:'/page/admin/component1'
+                        },
+                        {
+                            name:'组件3-1',
+                            hasChildren:true,
+                            open:false,
+                            children:[
+                                {
+                                    name:'路由3-1',
+                                    path:'/page/admin/component1'
+                                }
+                            ]
                         }
                     ]
                 }

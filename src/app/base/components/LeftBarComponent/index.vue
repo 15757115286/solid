@@ -1,85 +1,77 @@
 <template>
     <div class="left-bar">
-        <ul class="first-menu-ul">
-            <!--一级菜单的循环  -->
-            <li v-for="menu in menus" class="first-menu-li">
-                <a v-if="menu.hasChildren" @click.prevent="toggle(menu,$event)" 
-                class="can-expend" :class="{open:menu.open ,'stop-toggle':menu.stopToggle}">
-                    <i class="fa" :class = "menu.icon || defaultIcon" aria-hidden="true"></i>
-                    <span class="menu-name">{{ menu.name }}</span>
-                    <i class="fa fa-angle-right pull-right" aria-hidden="true"></i>
-                </a>
-                <router-link v-else :to="menu.path" >
-                    <i class="fa" :class = "menu.icon || defaultIcon" aria-hidden="true"></i>
-                    <span class="menu-name">{{ menu.name }}</span>
-                </router-link>
-                <ul v-if="menu.hasChildren" class="second-menu-ul"  
-                 :style="{height:getMenuHeight(menu)}">
-                    <!--二级菜单的循环  -->
-                    <li v-for="menu2 in menu.children" class="second-menu-li">
-                        <a v-if=" menu2.hasChildren " @click.prevent="toggle(menu2,$event)" 
-                        class="can-expend" :class="{open:menu2.open ,'stop-toggle':menu.stopToggle}">
-                          <i class="fa" :class = "menu2.icon || defaultIcon" aria-hidden="true"></i>
-                          <span class="menu-name">{{ menu2.name }}</span>
-                          <i class="fa fa-angle-right pull-right" aria-hidden="true"></i>
-                        </a>
-                        <router-link v-else :to="menu2.path">
-                            <i class="fa" :class = "menu.icon || defaultIcon" aria-hidden="true"></i>
-                            <span class="menu-name">{{ menu2.name }}</span>
-                        </router-link>
-                        <ul v-if="menu2.hasChildren" class="third-menu-ul"  
-                          :style="{height:menu2.open ? menu2.children.length * height + 'px' : '0px' }">
-                          <li v-for="menu3 in menu2.children" class="third-menu-li">
-                            <router-link  :to="menu3.path">
-                              <i class="fa" :class = "menu3.icon || defaultIcon" aria-hidden="true"></i>
-                              <span class="menu-name">{{ menu3.name }}</span>
-                            </router-link>    
-                          </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+       <item-component :data="items" :level="0"></item-component>
     </div>
 </template>
 <script>
+import ItemComponent from './item'
 import getMenuSoruce, { height, defaultIcon , setObserveMenu } from "@/assets/source/menu";
 export default {
   name: "leftBarComponent",
+  components:{
+    ItemComponent
+  },
   data() {
     return {
       menus: [],
       height,
-      defaultIcon
+      defaultIcon,
+      items:null
     };
   },
   created() {
     this.menus = getMenuSoruce();
     setObserveMenu(this.$set,this.menus);
+    this.items = {
+      open:true,
+      children:this.menus
+    }
+  },
+  provide(){
+    return {
+      toggle:this.toggle,
+      getMenuHeight:this.getMenuHeight,
+      transNumToEn:this.transNumToEn,
+      defaultIcon
+    }
   },
   methods: {
     toggle(menu, event) {
       let elem = event.target;
-      if(elem.nodeName == 'A'){
-        this.$A.getSize(elem.nextElementSibling);
-      }
       if(menu.stopToggle) return;
       menu && (menu.open = !menu.open);
+      let ul = this.getMenuUl(elem);
+      this.$A(ul).toggle(200);
     },
      getMenuHeight(menu){
       if(!menu.open) return '0px';
-      let count = menu.children.length;
-      for(let m in menu.children){
-        if(menu.children[m].open){
-          count += menu.children[m].children.length;
+      let count = this.recursive(menu);
+      return this.height * count + 'px'; 
+    },
+    recursive(child){
+      let count = child.children.length;
+      for(let m in child.children){
+        if(child.children[m].open){
+          count += this.recursive(child.children[m])
         }
       }
-      return this.height * count + 'px'; 
+      return count;
+    },
+    getMenuUl(node){
+      if(node.tagName.toLowerCase() == 'li'){
+        return node.lastElementChild;
+      }else{
+        return this.getMenuUl(node.parentElement)
+      }
+    },
+    transNumToEn(level){
+      let array = ['first','second','third','fourth','fifth','sixth','eighth','ninth','ninth'];
+      return array[level] || 'final';
     }
   }
 };
 </script>
-<style scoped>
+<style>
 .left-bar {
   position: fixed;
   left: 0px;
@@ -91,11 +83,6 @@ export default {
 .left-bar a {
   display: block;
   padding: 10px 5px 10px 12px;
-}
-.second-menu-ul,
-.third-menu-ul {
-  overflow: hidden;
-  transition: height 0.3s;
 }
 .left-bar i + span {
   margin-left: 10px;
