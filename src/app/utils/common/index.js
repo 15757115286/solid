@@ -26,3 +26,4 @@ export function isNumber(num){
 export function isObject(obj){
     return toString.call(obj) === '[object Object]'
 }
+export function noop(){}

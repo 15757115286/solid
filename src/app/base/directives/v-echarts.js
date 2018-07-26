@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import echarts from 'echarts';
+import { noop } from 'app/utils/common'
 let directive =  {
     bind: (el, binding) => {
         Vue.nextTick(() => {
@@ -32,11 +33,9 @@ let directive =  {
         }
     }
 }
-let isUsed = false;
-
-export default function(){
-    if(!isUsed){
-        Vue.directive('echarts',directive);
-        isUsed = true;
-    }
+let useEcharts = ()=>{
+    Vue.directive('echarts',directive);
+    useEcharts = noop;
 }
+
+export default useEcharts
