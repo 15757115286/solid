@@ -9,7 +9,7 @@ export default {
     props:['myname'],
     directives:{
         move:{
-            bind(el){
+            inserted(el){
                 document.body.appendChild(el);
                 console.log(el.parentNode);
             }

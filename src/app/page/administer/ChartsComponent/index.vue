@@ -1,14 +1,14 @@
 <template>
     <div>
-        <div class="charts" v-echarts="option"></div>
+        <chart class="charts" :options="option"></chart>
     </div>
 </template>
 <script>
-import getOption from './data'
+import getOption, { getLineOption, getGuageOption } from './data'
 export default {
     data(){
         return {
-            option:getOption()
+            option:getLineOption()
         }
     }
 }
