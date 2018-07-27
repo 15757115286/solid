@@ -25,16 +25,6 @@ module.exports = {
         open: false //是否自动打开网页
     },
     configureWebpack: config => {
-        //这里为了兼容vue-charts的按需引用，貌似在官方的babel-loader里node_modules里面的都会被过滤
-        //哪怕用了include，推测是exclude里面给忽略了，所里在这里又给它做了一层拦截
-        config.module.rules.push({
-            test: /\.js$/,
-            loader: 'babel-loader',
-            include: [
-                resolve('node_modules/vue-echarts'),
-                resolve('node_modules/resize-detector')
-            ]
-        })
         //更改调试映射map
         const devtool = 'inline-source-map';
         config.devtool = devtool;
@@ -45,5 +35,9 @@ module.exports = {
         config.resolve.alias.set('app', resolve('src/app'));
         //关闭资源预加载
         config.plugins.delete('prefetch')
-    }
+    },
+    transpileDependencies:[
+        /node_modules\\vue-echarts/,
+        /node_modules\\resize-detector/
+    ]
 }

@@ -67,7 +67,7 @@ props是需要过渡的最终的css属性,duration为时间，option有3个参�
 没有引入echarts大概多300-400ms的时间。
 所以这里在main.js中引用的话，可能不是太合适。我们使用懒加载的模块，第一个LoginComponent是直接加载的，而pageComponent是
 用懒加载进行的，所以这个项目中在pageComponent中加载比较好。
-这里的echarts改用了vue-charts组件
+这里的echarts改用了vue-charts组件,之前用的是指令的形式且没有按需加载，现在改成了按需加载。
 
 ## 关于prefetch
 
@@ -76,3 +76,17 @@ props是需要过渡的最终的css属性,duration为时间，option有3个参�
 这个时间是纯粹的下载时间，因为这里同样是用到了路由懒加载，这部分代码并不会在首屏的时候被执行。
 所以在这里我先关闭了预加载功能。如果需要可以在vue.config.js的注释掉关闭的代码即可。
 但会这部分资源的下载时间会在点击登录以后（跳转到相应组件）时候被加载。
+
+## vue.config.js中的transpileDependencies（略坑）
+
+这个对象是一个数组，里面的内容可以是字符串或者是正则对象。因为vue-cli中babel-loader默认是不对node_modules中的jsx?进行
+转译的，但是如果我们的项目中直接引用了某个node_modules中的文件，那么就需要对这个文件进行转译，不然可能会不兼容低版本游览器。
+之前我是用path.resolve去进行文件路径的转化放置到这个数组中，却一直发现该文件没有被babel-loader处理，折腾了很久去就翻源码，
+发现他是用filepath.match(dep)来检测是否发生匹配的，坑的就是match这个函数。
+一般我们用path.resove出来的地址是这样的："E:\\project\\node_modules\\xxxdir\\xxxfile.js"这样的路径。看到这里应该就明白了吧，
+这里的双反斜杠中第一个反斜杠的作用是让第二个反斜杠看做一个普通的反斜杠，但是把这个字符串丢给match以后，它又会把这个字符串丢给
+RegExp来转化成正则表达式，就相当于/E:\project\node_modules\xxxdir\xxxfile.js/这样的一个正则。这里的反斜杠又对project中的p
+进行了转译，那肯定是匹配不到filepath(所有的filepath都是用的反斜杠（\）来分隔路径的)。
+所以这里的解决方法是直接用正则或自己写的字符串，比如我们想对“node_modules/xxx"下的js进行babel-loader,那么可以写成下面这样的：
+transpileDependencies:[/node_modules\\xxx/] 或者 transpileDependencies:["node_modules\\\\xxx"]
+这样配置以后即可正常的使用transpileDependencies这个属性。
