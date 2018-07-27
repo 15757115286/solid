@@ -7,9 +7,8 @@
             :showIcon="true"
             :showFooter="showFooter">
             <Table :columns="columns1" :data="data1"></Table>
-            <div slot="footer">
-                <Button>底部按钮</Button>
-            </div>
+            <Button slot="footer" style="margin-right:10px;">底部按钮1</Button>
+            <Button slot="footer">底部按钮2</Button>
         </box-component>
         <button @click="showFooter = !showFooter">显示/隐藏底部</button>
     </div>
