@@ -11,6 +11,7 @@ export default {
         '/page/error/500':'错误页面（500）',
         '/page/error/network':'网络请求错误页面',
         '/page/admin/global-tree':'全局树功能测试',
-        '/page/admin/charts':'Echarts例子'
+        '/page/admin/charts':'Echarts例子',
+        '/page/test/box':'Box组件测试'
     }
 }

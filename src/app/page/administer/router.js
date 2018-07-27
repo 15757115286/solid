@@ -1,12 +1,12 @@
 import AdministerComponent from './index'
-const MapComponent = () => import(/* webpackChunkName: 'administer' */'./MapComponent');
+const MapComponent = () => import(/* webpackChunkName: 'map' */'./MapComponent');
 const Component1 = () => import(/* webpackChunkName: 'administer' */'./Component1');
 const Component2 = () => import(/* webpackChunkName: 'administer' */'./Component2');
 const Component3 = () => import(/* webpackChunkName: 'administer' */'./Component3');
 const HttpComponent = () => import(/* webpackChunkName: 'administer' */'./HttpComponent');
 const TreeTestComponent = () => import(/* webpackChunkName: 'administer' */'./TreeTestComponent');
 const GlobalTreeComponent = () => import(/* webpackChunkName: 'administer' */'./GlobalTreeComponent');
-const ChartsComponent = () => import(/* webpackChunkName: 'administer' */'./ChartsComponent');
+const ChartsComponent = () => import(/* webpackChunkName: 'charts' */'./ChartsComponent');
 const adminRouter = {
     path: 'admin',
     component:AdministerComponent,

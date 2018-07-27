@@ -11,7 +11,6 @@ import ContentComponent from 'app/base/components/ContentComponent'
 import HeadComponent from 'app/base/components/HeadComponent'
 import LeftBarComponent from 'app/base/components/LeftBarComponent'
 import RightBarComponent from 'app/base/components/RightBarComponent'
-import 'app/base/components/EchartComponent'
 
 export default {
     name:'pageComponent',

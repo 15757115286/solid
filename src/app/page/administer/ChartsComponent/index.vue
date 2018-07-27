@@ -5,6 +5,7 @@
 </template>
 <script>
 import getOption, { getLineOption, getGuageOption } from './data'
+import 'app/base/components/EchartComponent'
 export default {
     data(){
         return {

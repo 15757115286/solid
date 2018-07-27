@@ -14,6 +14,18 @@ export default function getMenuSource(){
             icon:'fa-bar-chart'
         },
         {
+            name:'自定义组件',
+            hasChildren:true,
+            children:[
+                {
+                    name:'Box组件',
+                    path:'/page/test/box',
+                    hasChildren:false
+                }
+            ],
+            open:true
+        },
+        {
             name:'树插件测试',
             path:'/page/admin/tree',
             hasChildren:false,
