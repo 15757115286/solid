@@ -1,7 +1,21 @@
 <template>
-    <div class="tree-root">
+  <div>
+    <div class="search-container" ref="input" v-if="mergeOption.needSearch" >
+      <div class="icon-wrapper" @click="search($event)">
+        <i class="fa fa-search search-icon" aria-hidden="true"></i>
+      </div>
+      <input 
+        @keydown.enter="search($event)"
+        class="search-input"
+        type='text' 
+        v-model="searchText" 
+        :placeholder="placeholder">
+    </div>
+    
+    <div class="tree-root" :style="{height:rootHeight}">
         <recursive-component :data="data" :option="mergeOption"  :level="level"></recursive-component>
     </div>
+  </div>
 </template>
 <script>
 import defaultOption from "./defaultOption";
@@ -18,7 +32,53 @@ export default {
     option: {
       type: Object,
       default: {}
+    },
+    placeholder:{
+      type:String,
+      default:'请输入节点名称'
     }
+  },
+  mounted(){
+    if(this.mergeOption.needSearch){
+      this.height = parseFloat(getComputedStyle(this.$refs.input).height);
+    }
+  },
+  created() {
+    //合并默认的选项
+    Object.assign(this.mergeOption, defaultOption, this.option);
+    this.selected = function(child) {
+      this.selectNode(child);
+      this.$emit("selected", child);
+    }.bind(this);
+    this.expand = function(child, event, isAsync = false) {
+      if (this.mergeOption.needAnimation) {
+        let target = event.target;
+        let targetName = target.tagName.toLowerCase();
+        let ul =
+          targetName == "i"
+            ? target.parentElement.parentElement.nextElementSibling
+            : target.parentElement.nextElementSibling;
+        ul && isAsync && (ul.style.display = "none"); //为了让第一次的动画的hack
+        let animation = ul ? this.$A(ul) : null;
+        if (child.expand) {
+          animation && animation.show(150);
+        } else {
+          animation && animation.hidden(150);
+        }
+      }
+      this.$emit("expand", child);
+    }.bind(this);
+    this.check = function(child) {
+      this.$emit("check", child);
+    }.bind(this);
+    bus.$on("selected", this.selected);
+    bus.$on("expand", this.expand);
+    bus.$on("check", this.check);
+  },
+  destroyed() {
+    bus.$off("selected", this.selected);
+    bus.$off("expand", this.expand);
+    bus.$off("check", this.check);
   },
   data() {
     return {
@@ -27,13 +87,32 @@ export default {
       expand: null,
       selected: null,
       check: null,
-      level: 1
+      level: 1,
+      searchText:'',
+      height:0,
+      plainData:[]
     };
+  },
+  computed:{
+    rootHeight(){
+      return this.height > 0 ? `calc(100% - ${this.height}px)` : false;
+    }
   },
   components: {
     RecursiveComponent
   },
   methods: {
+    search(event){
+      console.log(this.searchText);
+      console.log(this.plainData);
+    },
+    selectNode(node){
+      if (this.selected) {
+        this.selected[this.mergeOption.selected] = false;
+      }
+      this.selected = node;
+      node[this.mergeOption.selected] = true;
+    },
     getSelectedNode() {
       return this.selected;
     },
@@ -53,6 +132,7 @@ export default {
         if (node === this.selected) this.selected = null;
         let pos = children.indexOf(node);
         pos >=0 && children.splice(pos, 1);
+        this.recursivePlainDelete(node);
       });
     },
     addNodes(parent, nodes) {
@@ -79,7 +159,11 @@ export default {
           this.$set(node, "status", "beforeLoad");
           this.$set(node, this.mergeOption.children, []);
         }
-        parent[this.mergeOption.children].push(node);
+        let children = parent[this.mergeOption.children];
+        if(!this.mergeOption.isAsync && children && children.length > 0){
+          this.plainData.push(node);//如果children为0，那么新增节点会调用recursive组件中created中的push。
+        }
+        children.push(node);
         typeof beforeRender === "function" && beforeRender.call(this, node);
         node.imgPath = this.findPath(node);
       });
@@ -122,6 +206,15 @@ export default {
           this.recursiveGet(child, checks);
         });
       }
+    },
+    recursivePlainDelete(node){
+      let pos = this.plainData.indexOf(node);
+      let children = node[this.mergeOption.children];
+      if(Array.isArray(children)){
+        children.forEach(child=>this.recursivePlainDelete(child));
+      }
+      pos >=0 && this.plainData.splice(pos,1);
+      
     },
     //1.初始化数据（第一次加载）时候会为每个元素判断路径
     //2.会在新增节点时候为父元素和每个子元素重新判断路径
@@ -168,49 +261,11 @@ export default {
   },
   provide(){
     return {
-      findPath:this.findPath
+      findPath:this.findPath,
+      plainData:this.plainData
     }
-  },
-  created() {
-    this.selected = function(child) {
-      if (this.selected) {
-        this.selected[this.mergeOption.selected] = false;
-      }
-      this.selected = child;
-      child[this.mergeOption.selected] = true;
-      this.$emit("selected", child);
-    }.bind(this);
-    this.expand = function(child, event, isAsync = false) {
-      if (this.mergeOption.needAnimation) {
-        let target = event.target;
-        let targetName = target.tagName.toLowerCase();
-        let ul =
-          targetName == "i"
-            ? target.parentElement.parentElement.nextElementSibling
-            : target.parentElement.nextElementSibling;
-        ul && isAsync && (ul.style.display = "none"); //为了让第一次的动画的hack
-        let animation = ul ? this.$A(ul) : null;
-        if (child.expand) {
-          animation && animation.show(150);
-        } else {
-          animation && animation.hidden(150);
-        }
-      }
-      this.$emit("expand", child);
-    }.bind(this);
-    this.check = function(child) {
-      this.$emit("check", child);
-    }.bind(this);
-    Object.assign(this.mergeOption, defaultOption, this.option);
-    bus.$on("selected", this.selected);
-    bus.$on("expand", this.expand);
-    bus.$on("check", this.check);
-  },
-  destroyed() {
-    bus.$off("selected", this.selected);
-    bus.$off("expand", this.expand);
-    bus.$off("check", this.check);
   }
 };
 </script>
+
 

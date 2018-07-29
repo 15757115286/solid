@@ -1,5 +1,8 @@
 .tree-root{
+    position: relative;
     overflow: auto;
+    height: 100%;
+    width: 100%;
 }
 .tree-children{
     position: relative;
@@ -67,4 +70,31 @@
 {
     from {transform: rotate(0deg);}
     to {transform: rotate(360deg);}
+}
+.search-input{
+    width: 100%;
+    padding: 3px 30px 3px 5px;
+    font-size: 14px;
+    line-height: 14px;
+}
+.search-container{
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 0 10px;
+}
+.icon-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    height: 100%;
+    width: 30px;
+    cursor: pointer;
+    z-index: 1;
+}
+.search-icon{
+    font-size: 20px;
 }

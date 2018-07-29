@@ -5,7 +5,8 @@ const defaultOption = {
     key:'id',//唯一主键别名
     value:'name',//值别名
     showIcon:false,//是否有图标
-    showCheckBox:false,//是否显示勾选框
+    showCheckBox:false,//是否显示勾选框,
+    showSearch:false,//是否显示树节点搜索框，如果是异步树的话只能所搜已经加载好的节点
     expand:'expand',//是否展开别名 如果是异步加载，expand事件会在expand加载成功后触发
     selected:'selected',//是否选中别名
     checked:'checked',//是否选中当前节点（如果节点没有该属性会自动添加）
@@ -26,7 +27,8 @@ const defaultOption = {
     loadData:null,//异步获取数据的方法，
     level:'level',//节点所处的层级，如果提供的数据中已经有该属性则不会自动去添加（谨慎）,
     beforeRender:null,//在每个节点被渲染前调用，提供节点和当前组件,在寻找图标路径前面执行(this绑定的是tree组件或者每个ul的组件)
-    noData:'noData'//异步节点中判断是否还有数据（用来展示是否展开图标）
+    noData:'noData'//异步节点中判断是否还有数据（用来展示是否展开图标）,
+
 }
 Object.freeze(defaultOption);
 export default defaultOption;

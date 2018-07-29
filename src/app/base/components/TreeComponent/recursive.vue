@@ -58,6 +58,8 @@ export default {
     };
   },
   created() {
+    //数据扁平化
+    this.plainData.push(...this.copyOfData);
     //节点默认参数补齐
     let beforeRender = this.option.beforeRender;
     this.copyOfData.forEach(elem => {
@@ -86,7 +88,7 @@ export default {
       }
     });
   },
-  inject:['findPath'],
+  inject:['findPath','plainData'],
   methods: {
     hasChildren(child) {
       return (

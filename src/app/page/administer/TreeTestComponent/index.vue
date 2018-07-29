@@ -29,6 +29,7 @@ export default {
         needChangeIcon: false,
         isAsync: true,
         needLink:false,
+        needSearch:true,
         transImgPath(child) {
           //if(child.level == 3) return refersh;
         },
