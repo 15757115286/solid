@@ -1,7 +1,8 @@
 <template>
     <div class="right-bar" :class="$store.state.showTree && 'show-bar'">
         <tree-component :data="data" :option="option" class="right-tree" ref="tree"
-            @selected="selected($event)" @check="check($event)" @expand="expand($event)">
+            @selected="selected($event)" @check="check($event)" @expand="expand($event)"
+            placeholder="节点名称">
         </tree-component>
     </div>
 </template>
@@ -9,7 +10,7 @@
 import TreeComponent from 'app/base/components/TreeComponent'
 import getData from 'app/page/administer/TreeTestComponent/data'
 import globalBus from 'app/utils/bus'
-let num = 1;
+let num = 1000;
 export default {
     name:'rightBarComponent',
     components:{
@@ -28,9 +29,10 @@ export default {
             data:getData(),
             option:{
                 showIcon:true,
-                needAnimation:false,
+                needAnimation:true,
                 isAsync:true,
                 showCheckBox:false,
+                needSearch:true,
                 loadData(child, callback) {
                     setTimeout(() => {
                         callback([

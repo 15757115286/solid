@@ -73,7 +73,7 @@
 }
 .search-input{
     width: 100%;
-    padding: 3px 30px 3px 5px;
+    padding: 3px 35px 3px 5px;
     font-size: 14px;
     line-height: 14px;
 }
@@ -93,11 +93,21 @@
     height: 100%;
     width: 30px;
     cursor: pointer;
-    z-index: 1;
+    border-left: 1px solid #a9a9a9;
 }
 .search-icon{
     font-size: 20px;
 }
 .tree-matched:not(.tree-selected){
     background-color: #ffe798;
+}
+.right-reset{
+    right: 40px;
+}
+.padding-reset{
+    padding-right: 65px;
+}
+.icon-wrapper:hover{
+    color: #3e9afa;
+    transition: all 0.2s;
 }

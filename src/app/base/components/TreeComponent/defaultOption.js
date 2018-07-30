@@ -29,10 +29,12 @@ const defaultOption = {
     level:'level',//节点所处的层级，如果提供的数据中已经有该属性则不会自动去添加（谨慎）,
     beforeRender:null,//在每个节点被渲染前调用，提供节点和当前组件,在寻找图标路径前面执行(this绑定的是tree组件或者每个ul的组件)
     noData:'noData',//异步节点中判断是否还有数据（用来展示是否展开图标）,
-    searchKey:null//对应节点中的哪个属性的value和输入的value匹配。如果没有此属性，则默认用option.value来做匹配
+    searchKey:null,//对应节点中的哪个属性的value和输入的value匹配。如果没有此属性，则默认用option.value来做匹配,
+    needReset:true//是否需要重置按钮
 }
 Object.freeze(defaultOption);
 export default defaultOption;
+//确定树的ID，因为html中的id是唯一的，所以用来确保唯一的ul的ID
 let treeOrder = 1;
 export let getTreeOrder = function(){
     return '-id' + treeOrder++;

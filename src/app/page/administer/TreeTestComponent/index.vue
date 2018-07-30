@@ -31,6 +31,7 @@ export default {
         isAsync: true,
         needLink:false,
         needSearch:true,
+        needReset:true,
         searchKey:'name',//如果这里填id的话会根据把输入的内容与id匹配
         transImgPath(child) {
           //if(child.level == 3) return refersh;

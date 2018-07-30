@@ -1,15 +1,20 @@
 <template>
   <div>
     <div class="search-container" ref="input" v-if="mergeOption.needSearch" >
-      <div class="icon-wrapper" @click="search($event)">
+      <div class="icon-wrapper" :class="{'right-reset':mergeOption.needReset}" 
+        @click="search($event)" ref="search">
         <i class="fa fa-search search-icon" aria-hidden="true"></i>
+      </div>
+      <div class="icon-wrapper" @click="reset()" ref="reset" v-if="mergeOption.needReset">
+        <i class="fa fa-times search-icon" aria-hidden="true"></i>
       </div>
       <input 
         @keydown.enter="search($event)"
         class="search-input"
         type='text' 
         v-model="searchText" 
-        :placeholder="placeholder">
+        :placeholder="placeholder"
+        :class="{'padding-reset':mergeOption.needReset}">
     </div>
     
     <div class="tree-root" :style="{height:rootHeight}">
@@ -42,6 +47,13 @@ export default {
   mounted() {
     if (this.mergeOption.needSearch) {
       this.height = parseFloat(getComputedStyle(this.$refs.input).height);
+    }
+    if (this.mergeOption.needSearch) {
+      let search = this.$refs.search,
+          reset = this.$refs.reset;
+      let searchWidth = search ? parseFloat(getComputedStyle(search).width) : 0;
+      let resetWidth = reset ? parseFloat(getComputedStyle(reset).width) : 0;
+      this.pdRight = searchWidth + resetWidth + 5 + "px";
     }
   },
   created() {
@@ -80,7 +92,8 @@ export default {
       plainData: [],
       matchNodes: [],
       treeOrder: getTreeOrder(),
-      bus: createBus()
+      bus: createBus(),
+      pdRight: null
     };
   },
   computed: {
@@ -127,6 +140,13 @@ export default {
         event,
         result
       });
+    },
+    reset() {
+      this.matchNodes.forEach(node => {
+        node.matched = false;
+      });
+      this.matchNodes = [];
+      this.searchText = "";
     },
     getUlByNode(node) {
       return document.querySelector(
