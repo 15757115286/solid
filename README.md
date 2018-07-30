@@ -89,4 +89,4 @@ RegExp来转化成正则表达式，就相当于/E:\project\node_modules\xxxdir\
 进行了转译，那肯定是匹配不到filepath(所有的filepath都是用的反斜杠（\）来分隔路径的)。
 所以这里的解决方法是直接用正则或自己写的字符串，比如我们想对“node_modules/xxx"下的js进行babel-loader,那么可以写成下面这样的：
 transpileDependencies:[/node_modules\\xxx/] 或者 transpileDependencies:["node_modules\\\\xxx"]
-这样配置以后即可正常的使用transpileDependencies这个属性。
+这样配置以后即可正常的使用transpileDependencies这个属性（请查看源文件,md文件已经被转译过）。
