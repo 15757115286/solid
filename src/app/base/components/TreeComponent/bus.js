@@ -1,2 +1,6 @@
 import Vue from 'vue';
-export default new Vue()
+function createBus() {
+    let bus = new Vue();
+    return bus;
+}
+export default createBus;

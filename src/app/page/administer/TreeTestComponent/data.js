@@ -1,5 +1,5 @@
-import order from '@/assets/img/order.png'
 export default function(){
+    console.log(1);
     return [
         {
             id:1,

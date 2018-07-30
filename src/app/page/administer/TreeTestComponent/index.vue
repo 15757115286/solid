@@ -3,6 +3,7 @@
         <tree-component ref="tree" :data="data" :option="option" 
             @selected="selected($event)" @expand="expand($event)" 
             @check="check($event)"
+            @search="search($event)"
             style="width:400px;height:500px;"></tree-component>
         <div>
             <button @click="deleteChecks()">删除勾选节点</button>
@@ -25,11 +26,12 @@ export default {
         value: "name",
         showIcon: true,
         showCheckBox: true,
-        needAnimation: false,
+        needAnimation: true,
         needChangeIcon: false,
         isAsync: true,
         needLink:false,
         needSearch:true,
+        searchKey:'name',//如果这里填id的话会根据把输入的内容与id匹配
         transImgPath(child) {
           //if(child.level == 3) return refersh;
         },
@@ -95,6 +97,9 @@ export default {
                 name: "异步加载节点1",
             })
         }
+    },
+    search(event){
+      console.log(event);
     }
   }
 };
