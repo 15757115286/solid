@@ -11,7 +11,7 @@ export default new Vuex.Store({
       isLogin: false,
       currentPath:{},
       local:'zh',
-      showTree:true
+      showTree:false
     },
     /**
      * mutations中的函数只能是同步函数，在组件中通过this.$store.commit(type:string,option:object)触发

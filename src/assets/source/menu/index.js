@@ -21,6 +21,11 @@ export default function getMenuSource(){
                     name:'Box组件',
                     path:'/page/test/box',
                     hasChildren:false
+                },
+                {
+                    name:'keep-alive组件',
+                    path:'/page/test/keep-alive',
+                    hasChildren:false
                 }
             ],
             open:true
