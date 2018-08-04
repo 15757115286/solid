@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color:green">
+    <div>
         <span>测试组件2,点击次数：{{ count }}</span>
         <button  @click="add()">点击</button>
     </div>

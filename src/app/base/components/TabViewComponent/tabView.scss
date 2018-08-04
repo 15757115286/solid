@@ -39,51 +39,25 @@
 .tabview.view{
     padding: 0;
     position: relative;
-    overflow-x:hidden;  
+    overflow: hidden;
 }
-
-.translate-enter{
-    position: absolute;
+.view-container{
+    display: flex;
+}
+.view-animation{
+    transition: transform 0.3s linear;
+}
+.view-container > *{
+    display: block;
     width: 100%;
-    left: -100%;
-    top: 0;
+    flex-shrink: 0;
 }
-.translate-enter-active{
-    top:0;
-    width: 100%;
-    position: absolute;
-    animation: enter-in 5s linear;
+.go-front{
+    transform: translateX(-200%)
 }
-@keyframes enter-in{
-    from{
-        left: -100%;
-    }
-    to{
-        left: 0;
-    }
+.go-front-animation{
+    transform: translateX(100%);
 }
-.translate-leave{
+.go-back-animation{
+    transform: translateX(-100%);
 }
-.translate-leave-active{
-    animation: leave-out 5s linear;
-}
-@keyframes leave-out{
-    from{
-        transform: translateX(0%);
-    }
-    to{
-        transform: translateX(100%)
-    }
-}
-
-.slide-fade-enter-active {
-    transition: all 4.3s ease;
-  }
-  .slide-fade-leave-active {
-    transition: all 4.8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .slide-fade-enter, .slide-fade-leave-to
-  /* .slide-fade-leave-active for below version 2.1.8 */ {
-    transform: translateX(10px);
-    opacity: 0;
-  }

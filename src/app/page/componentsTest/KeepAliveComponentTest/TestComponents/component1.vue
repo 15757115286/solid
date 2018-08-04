@@ -1,11 +1,5 @@
 <template>
-    <div style="background-color:red">
-        <p>测试组件1,点击次数：{{ count }}</p>
-        <p>测试组件1,点击次数：{{ count }}</p>
-        <p>测试组件1,点击次数：{{ count }}</p>
-        <p>测试组件1,点击次数：{{ count }}</p>
-        <p>测试组件1,点击次数：{{ count }}</p>
-        <p>测试组件1,点击次数：{{ count }}</p>
+    <div>
         <p>测试组件1,点击次数：{{ count }}</p>
         <button @click="add()">点击</button>
     </div>
