@@ -10,7 +10,7 @@
             </ul>
         </div>
         <div class="tabview view">
-            <transition name="fade" v-if="needCache">
+            <transition name="slide-fade" v-if="needCache">
                 <keep-alive :include="include">
                     <component :is="currentComponent"></component>
                 </keep-alive>

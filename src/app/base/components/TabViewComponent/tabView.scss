@@ -37,8 +37,53 @@
     left: 0;
 }
 .tabview.view{
-    padding: 10px;
+    padding: 0;
+    position: relative;
+    overflow-x:hidden;  
 }
-.fade-leave-active{
+
+.translate-enter{
     position: absolute;
+    width: 100%;
+    left: -100%;
+    top: 0;
 }
+.translate-enter-active{
+    top:0;
+    width: 100%;
+    position: absolute;
+    animation: enter-in 5s linear;
+}
+@keyframes enter-in{
+    from{
+        left: -100%;
+    }
+    to{
+        left: 0;
+    }
+}
+.translate-leave{
+}
+.translate-leave-active{
+    animation: leave-out 5s linear;
+}
+@keyframes leave-out{
+    from{
+        transform: translateX(0%);
+    }
+    to{
+        transform: translateX(100%)
+    }
+}
+
+.slide-fade-enter-active {
+    transition: all 4.3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all 4.8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+  }
