@@ -8,16 +8,16 @@
 export default {
     name:'component3',
     created(){
-        console.log('component3 created');
+        //console.log('component3 created');
     },
     destroyed(){
-        console.log('component3 destory');
+        //console.log('component3 destory');
     },
     activated(){
-        console.log('component3 activated');
+        //console.log('component3 activated');
     },
     deactivated(){
-        console.log('component3 deactivated');
+        //console.log('component3 deactivated');
     },
     data(){
         return {

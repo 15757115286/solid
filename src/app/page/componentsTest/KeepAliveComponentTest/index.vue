@@ -10,7 +10,7 @@
         <button @click="pruneCache('component2')">删除组件2cache</button>
         <button @click="pruneCache('component3')">删除组件3cache</button>
         <div style="margin-top:30px;">
-            <tab-view-component :tabComponents="components" :needCache="true"></tab-view-component>
+            <tab-view-component :tabComponents="components" :needCache="true" :needAnimation="true"></tab-view-component>
         </div>
     </div>
 </template>
