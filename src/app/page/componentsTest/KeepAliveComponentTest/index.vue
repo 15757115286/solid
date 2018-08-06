@@ -23,6 +23,11 @@ export default {
   name: "keepAliveComponentTest",
   created() {
     console.log("parent -> created");
+   /*  console.log("before invoke async function");
+    let test = this.testAsync(123);
+    console.log(test);
+    test.then(p => console.log(p));
+    console.log("after invoke async function"); */
   },
   destroyed() {
     console.log(this);
@@ -60,6 +65,36 @@ export default {
     }
   },
   methods: {
+    async testAsync(param) {
+      console.log("begin async function");
+      try {
+        console.log("before await");
+        let s = await ((console.log(123) || true) &&
+          (function() {
+            console.log(111);
+            setTimeout(() => {
+              return "xwtnzz3cccc";
+            }, 3000);
+            console.log(333);
+          })());
+        console.log(s);
+        let j = await new Promise((res, rej) => {
+          console.log("jjj invoke");
+          setTimeout(() => {
+            console.log("jjj resolve");
+            //rej('xwtnzz3zz')
+          }, 3000);
+        });
+        console.log(j);
+      } catch (e) {
+        console.log(e, e.message);
+      }
+      console.log("before ccc");
+      let c = await param;
+      console.log("c is ---------------", c);
+      console.log("async function end");
+      //return 1;
+    },
     addCache(componentName) {
       if (this.include.indexOf(componentName) < 0) {
         this.include.push(componentName);
