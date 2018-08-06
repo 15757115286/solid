@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="addCache('component1')">component1</button>
+        <!-- <button @click="addCache('component1')">component1</button>
         <button @click="addCache('component2')">component2</button>
         <button @click="addCache('component3')">component3</button>
         <keep-alive :include="_include">
@@ -8,8 +8,8 @@
         </keep-alive>
         <button @click="pruneCache('component1')">删除组件1cache</button>
         <button @click="pruneCache('component2')">删除组件2cache</button>
-        <button @click="pruneCache('component3')">删除组件3cache</button>
-        <div style="margin-top:30px;">
+        <button @click="pruneCache('component3')">删除组件3cache</button> -->
+        <div class="tb-container">
             <tab-view-component :tabComponents="components" :needCache="true" :needAnimation="true"></tab-view-component>
         </div>
     </div>
@@ -111,6 +111,14 @@ export default {
 };
 </script>
 <style scoped>
+  .tb-container{
+    padding: 10px;
+    width: 200px;
+    height: 250px;
+    border:1px solid black;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
 </style>
 
 

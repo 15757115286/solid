@@ -1,6 +1,17 @@
+.tabview.tab{
+    position: relative;
+    display: flex;
+    padding: 0 20px;
+    align-items: center;
+}
+.tabview-scroll-container{
+    display: flex;
+    overflow: hidden;
+}
 .tabview-ul{
     display: flex;
     border-bottom: 1px solid rgb(220, 222, 226);
+    align-items: center;
 }
 .tabview-li{
     margin-right: 3px;
@@ -16,6 +27,7 @@
     border-bottom: 0;
     background-color: rgb(248, 248, 249);
     color: #515a6e;
+    white-space: nowrap;
 }
 .tabview-selected .tabview-a{
     position: relative;
@@ -27,7 +39,7 @@
     color: #57a3f3;
     background-color: rgb(248, 248, 249);
 }
-.tabview-selected .tabview-a::after{
+/* .tabview-selected .tabview-a::after{
     content: "";
     position: absolute;
     height: 1px;
@@ -35,13 +47,14 @@
     border: 1px solid rgb(255, 255, 255);
     bottom: -1px;
     left: 0;
-}
+} */
 .tabview.view{
     padding: 0;
     position: relative;
     overflow: hidden;
 }
 .view-container{
+    margin-top: 5px;
     display: flex;
 }
 .view-animation{
@@ -60,4 +73,20 @@
 }
 .go-back-animation{
     transform: translateX(-100%);
+}
+.tabview-scroll{
+    position: absolute;
+    cursor:pointer;
+    z-index: 1;
+}
+.tabview-scroll:hover{
+    color:#2d8cf0;
+}
+.scroll-left{
+    left: 0;
+    margin-left: 5px;
+}
+.scroll-right{
+    right: 0;
+    margin-right: 5px;
 }

@@ -1,13 +1,25 @@
 <template>
     <div class="tabview wrapper">
-        <div class="tabview tab">
-            <ul class="tabview-ul">
-                <li class="tabview-li" 
-                    v-for="(componentObj,index) in tabComponents"
-                    :class="{'tabview-selected':componentObj.component == currentComponent}">
-                    <a class="tabview-a" href="#" @click.prevent="tabClick(componentObj,index)">{{ componentObj.name }}</a>
-                </li>
+        <div class="tabview tab" 
+          @mouseenter="showScrollBtn = true"
+          @mouseleave="showScrollBtn = false">
+          <i class="fa fa-chevron-left tabview-scroll scroll-left" aria-hidden="true" 
+            v-if="showScrollBtn"
+            @click="scrollLeft()"></i>
+          <i class="fa fa-chevron-right tabview-scroll scroll-right" aria-hidden="true" 
+            v-if="showScrollBtn"
+            @click="scrollRight()"></i>
+          <div class="tabview-scroll-container"
+            ref="scroll">
+            <ul class="tabview-ul"
+              ref="tabs">
+              <li class="tabview-li" 
+                  v-for="(componentObj,index) in tabComponents"
+                  :class="{'tabview-selected':componentObj.component == currentComponent}">
+                  <a class="tabview-a" href="#" @click.prevent="tabClick(componentObj,index)">{{ componentObj.name }}</a>
+              </li>
             </ul>
+          </div>
         </div>
         <div class="tabview view">
             <div class="view-container" ref="container">
@@ -32,6 +44,16 @@
 import "./tabView.scss";
 export default {
   methods: {
+    scrollLeft(){
+      console.log(this.getTabStyle());
+    },
+    scrollRight(){
+
+    },
+    getTabStyle(){
+      console.log(getComputedStyle(this.$refs.tabs))
+      return getComputedStyle(this.$refs.scroll);
+    },
     tabClick(componentObj, index) {
       if (this.needAnimation) {
         if(this.isAnimation || this.index == index) return;
@@ -113,7 +135,8 @@ export default {
       index: 0,
       lastIndex: -1,
       isAnimation: false,
-      container:null
+      container:null,
+      showScrollBtn:false
     };
   },
   computed: {

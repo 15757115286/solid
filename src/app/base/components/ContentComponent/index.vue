@@ -20,6 +20,7 @@ export default {
         margin-left: 200px;
         overflow: auto;
         transition: all 0.3s;
+        padding-top: 30px;
     }
     .path{
         position: fixed;
@@ -32,9 +33,7 @@ export default {
         right: 0;
         overflow: hidden;
         padding-left: 10px;
-    }
-    .path-content{
-        margin-top: 30px;
+        top:50px;
     }
     .showTree{
         padding-right: 200px;
