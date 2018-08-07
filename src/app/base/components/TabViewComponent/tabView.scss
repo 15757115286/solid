@@ -7,11 +7,14 @@
 .tabview-scroll-container{
     display: flex;
     overflow: hidden;
+    position: relative;
 }
 .tabview-ul{
     display: flex;
     border-bottom: 1px solid rgb(220, 222, 226);
     align-items: center;
+    transition:transform 0.2s;
+    flex-shrink: 0;
 }
 .tabview-li{
     margin-right: 3px;
