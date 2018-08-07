@@ -44,6 +44,7 @@
     </div>
 </template>
 <script>
+/* 还有resize事件没有写，到时候有空再写 */
 import "./tabView.scss";
 export default {
   methods: {
@@ -58,9 +59,7 @@ export default {
       let offset = this.getOffset();
       const { tabs, scroll } = this;
       let scrollWidth = scroll.offsetWidth;
-      console.log(getComputedStyle(tabs).width);
       let tabsWidth = tabs.offsetWidth;
-      console.log(offset,scrollWidth,tabsWidth)
       if (scrollWidth > tabsWidth) return;
       else {
         //此时不需要滚动
@@ -78,7 +77,6 @@ export default {
       else this.scrollRight();
     },
     getTabStyle() {
-      console.log(getComputedStyle(this.$refs.tabs));
       return getComputedStyle(this.$refs.scroll);
     },
     tabClick(componentObj, index) {
@@ -89,9 +87,7 @@ export default {
         this.index = index;
       }
       this.currentComponent = componentObj.component;
-      this.translate(index);
     },
-    translate(lis, index) {},
     beforeEnter(el) {
       if (this.needAnimation && this.lastIndex > this.index) {
         this.container.classList.add("view-animation");
