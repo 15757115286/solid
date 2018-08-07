@@ -37,6 +37,8 @@
     background-color: rgb(255, 255, 255);
     color:#2d8cf0;
     border-color: #2d8cf0;
+    margin-bottom: -2px;
+    padding-bottom: 6px;
 }
 .tabview-selected:not(.tabview-selected) .tabview-a:hover{
     color: #57a3f3;
@@ -81,6 +83,8 @@
     position: absolute;
     cursor:pointer;
     z-index: 1;
+    top: 50%;
+    transform: translate(0 ,-50%);
 }
 .tabview-scroll:hover{
     color:#2d8cf0;

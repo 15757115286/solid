@@ -1,8 +1,8 @@
 <template>
     <div class="tabview wrapper">
         <div class="tabview tab" 
-          @mouseenter="showScrollBtn = true"
-          @mouseleave="showScrollBtn = false"
+         @mouseenter="showScrollBtn = true"
+          @mouseleave="showScrollBtn = true"
           @mousewheel="mousewheel($event)">
           <i class="fa fa-chevron-left tabview-scroll scroll-left" aria-hidden="true" 
             v-if="showScrollBtn"
