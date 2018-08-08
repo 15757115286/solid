@@ -7,11 +7,13 @@
     </div>
 </template>
 <script>
+import Vue from 'vue'
+import iView from 'iview'
 import ContentComponent from 'app/base/components/ContentComponent'
 import HeadComponent from 'app/base/components/HeadComponent'
 import LeftBarComponent from 'app/base/components/LeftBarComponent'
 import RightBarComponent from 'app/base/components/RightBarComponent'
-
+Vue.use(iView);//使用iView UI
 export default {
     name:'pageComponent',
     components:{

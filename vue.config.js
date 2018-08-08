@@ -18,6 +18,9 @@ function closeEslint(config) {
     pos >= 0 && rules.splice(pos, 1);
 }
 module.exports = {
+    baseUrl: process.env.NODE_ENV === 'production'
+    ? '/solid/'
+    : '/',
     //@see all the config of devServe https://webpack.js.org/configuration/dev-server/
     devServer: {
         host: '0.0.0.0', //默认本机地址为http://localhost:8080  局域网为本机内网ip:8080
