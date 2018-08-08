@@ -1,7 +1,11 @@
-import 'app/utils/polyfill'
-import 'iview/dist/styles/iview.css'
+// css引入
 import '@/assets/css/theme/theme.scss'
 import 'font-awesome/css/font-awesome.css'
+
+// polyfill引入，这里之引入了es6常用的promise，object，array，reflect
+import 'app/utils/polyfill'
+
+// 插件引入
 import 'app/base/filters'
 import 'app/base/directives'
 import 'app/base/http'
