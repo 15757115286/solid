@@ -19,8 +19,10 @@ function closeEslint(config) {
 }
 module.exports = {
     baseUrl: process.env.NODE_ENV === 'production'
-    ? '/solid/'
+    ? '/'
     : '/',
+    //在生产环境中不打包sourceMap，可以大大减少打包后的js文件大小，缺点是无法定位报错的代码
+    productionSourceMap:false,
     //@see all the config of devServe https://webpack.js.org/configuration/dev-server/
     devServer: {
         host: '0.0.0.0', //默认本机地址为http://localhost:8080  局域网为本机内网ip:8080
