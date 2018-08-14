@@ -71,6 +71,9 @@ export default {
   background: url(./img/login_bg.jpg) no-repeat fixed;
   background-size: 100% 100%;
 }
+#login .login-item input{
+  line-height: 24px;
+}
 .login-wrapper {
   position: relative;
   margin: 110px auto;
