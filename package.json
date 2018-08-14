@@ -13,6 +13,7 @@
     "echarts": "^4.1.0",
     "font-awesome": "^4.7.0",
     "iview": "^2.14.3",
+    "mockjs": "^1.0.1-beta3",
     "vue": "^2.5.16",
     "vue-echarts": "^3.0.9",
     "vue-router": "^3.0.1",

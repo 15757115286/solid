@@ -4,6 +4,7 @@
     </keep-alive>
 </template>
 <script>
+import 'app/utils/mock/componentTestMock'
 export default {
     name:'componentTest'
 }
