@@ -1,0 +1,23 @@
+.imgbox-item {
+    position: relative;
+    height: 250px;
+    width: 100%;
+    padding: 10px;
+    .imgbox-content {
+        width: 100%;
+        height: 100%;
+        border: 1px solid black;
+    }
+}
+
+.imgbox-item.imgbox-quarter {
+    width: 25%;
+}
+
+.imgbox-item.imgbox-third {
+    width: 33.3%;
+}
+
+.imgbox-item.imgbox-half{
+    width: 50%;
+}

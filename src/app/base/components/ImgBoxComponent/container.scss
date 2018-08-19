@@ -1,0 +1,19 @@
+.imgbox-container{
+    position: relative;
+    border: 1px solid #d1d7e1;
+    border-radius: 5px;
+    width: 100%;
+    .imgbox-title{
+        padding: 10px;
+        border-bottom:1px solid #d1d7e1;
+        i:first-child{
+            margin-right: 5px;
+        }
+    }
+    .imgbox-content{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        padding: 20px 10px;
+    }
+}

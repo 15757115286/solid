@@ -26,6 +26,11 @@ export default function getMenuSource(){
                     name:'keep-alive组件',
                     path:'/page/test/keep-alive',
                     hasChildren:false
+                },
+                {
+                    name:'ImgBox组件',
+                    path:'/page/test/img-box',
+                    hasChildren:false
                 }
             ],
             open:true

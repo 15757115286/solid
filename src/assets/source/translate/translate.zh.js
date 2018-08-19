@@ -12,6 +12,7 @@ export default {
         '/page/error/network':'网络请求错误页面',
         '/page/admin/global-tree':'全局树功能测试',
         '/page/admin/charts':'Echarts例子',
-        '/page/test/box':'Box组件测试'
+        '/page/test/box':'Box组件测试',
+        '/page/test/img-box':'ImgBox测试'
     }
 }
